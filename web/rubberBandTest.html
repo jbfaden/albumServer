@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+      
+  <form name="viewmap" method="post" action="" onsubmit="return false;">
+      <input type="Image" id="image1" src="http://10.0.0.203:8080/albumServer/PhotoServer?image=20070210_journal_test/Capture_00009.JPG&width=640&rotate=0">
+  </form>
+  
+  <img id="image2" src="http://10.0.0.203:8080/albumServer/PhotoServer?image=20070210_journal_test/Capture_00009.JPG&width=640&rotate=0">
+  <input type="Image" id="image3" src="http://10.0.0.203:8080/albumServer/PhotoServer?image=20070210_journal_test/Capture_00009.JPG&width=640&rotate=0">
+  <DIV ID="rubberBand" 
+      style="border: 1px solid #ff0000; position: absolute; visibility: hidden; width: 0px; height: 0px; ">
+  </DIV>
+    <script language="javascript" src="rubberBandObj.js">     </script>
+    <br>
+    <span id="log"><em>log</em></span>
+
+    <script language="javascript">
+        var image= document.getElementById("image1" );
+        var log= document.getElementById("log" );
+        var rubberBand= document.getElementById("rubberBand");
+        rubber= new RubberBand( document, image, rubberBand, log );
+    </script>
+
+  </body>
+</html>

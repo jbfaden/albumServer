@@ -1,0 +1,3 @@
+Images downloaded from https://www.iconfinder.com/icons/49843/media_play_icon#size=64
+rotated with gimp, etc.
+convert raw/counterClockwise.png -crop 52x52+6+6 -resize "32x32^" -gravity center  +repage counterClockwise.png

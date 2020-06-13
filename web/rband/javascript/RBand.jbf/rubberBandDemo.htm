@@ -1,0 +1,119 @@
+<HTML>
+ <HEAD>
+ <TITLE>RubberBanding</TITLE>
+<STYLE>
+ #rubberBand {
+   position: absolute;
+   visibility: hidden;
+   width: 0px; height: 0px;
+   border: 1px solid #ff0000;
+ }
+</STYLE>
+<SCRIPT>
+  var startX, startY;
+  
+  function startRubber (evt) {
+   if ( isMyEvent(evt) ) {
+	   if (document.getElementById) {
+		 var r = document.getElementById('rubberBand');
+		 startX= evt.clientX;
+		 startY= evt.clientY;
+		 r.style.width = 0;
+		 r.style.height = 0;
+		 r.style.left = evt.clientX + 'px';
+		 r.style.top = evt.clientY + 'px';
+		 r.style.visibility = 'visible';
+	   }
+	   else if (document.layers) {
+		 var r = document.rubberBand;
+		 r.clip.width = 0; r.clip.height = 0;
+		 r.left = evt.x;
+		 r.top = evt.y;
+		 startX= evt.x;
+		 startY= evt.y;
+		 r.visibility = 'show';
+	   }
+	   
+	   if (document.layers) {
+	      document.captureEvents(Event.MOUSEMOVE);
+        	}
+		this.onmousemove = moveRubber;
+	   document.onmousemove = moveRubber;
+	   return true;
+	} else {
+	    return false;
+    }
+ }
+ function moveRubber (evt) {
+   alert("here");
+   if (document.getElementById) {
+     var r = document.getElementById('rubberBand');
+	 var maxx= Math.max( evt.clientX, startX );
+	 var maxy= Math.max( evt.clientY, startY );
+	 var minx= Math.min( evt.clientX, startX );
+	 var miny= Math.min( evt.clientY, startY );
+	 
+     r.style.width = maxx - minx;
+     r.style.height = maxy - miny;
+	 r.style.left= minx;
+	 r.style.top= miny;
+   }
+   else if (document.layers) {
+     var r = document.rubberBand;
+     r.clip.width = evt.x - r.left;
+     r.clip.height = evt.y - r.top;
+     r.document.open();
+     r.document.write('<TABLE WIDTH="' + r.clip.width + '" HEIGHT="' + r.clip.height + '" BORDER="1"><TR><TD><\/TD><\/TR><\/TABLE>');
+     r.document.close();
+   }
+ }
+ 
+ function stopRubber (evt) {
+   if (document.layers) {
+	 document.releaseEvents(Event.MOUSEMOVE);
+   }
+   this.onmousemove = null;
+   //document.onmousemove = null;
+   return isMyEvent(evt);
+ }
+function log(msg) {
+  document.getElementById("logtext").setText(msg);
+}
+ 
+ function isMyEvent( evt ) {
+   if (document.getElementById) {
+	 startX= evt.clientX;
+	 startY= evt.clientY;
+   }
+   else if (document.layers) {
+	 startX= evt.x;
+	 startY= evt.y;
+   }
+   //if ( startX < 300 ) return true; else return false;
+   return true;
+ }
+
+  document.onmousedown = startRubber;
+  document.onmouseup = stopRubber;
+</SCRIPT>
+</HEAD>
+<BODY>
+<DIV ID="rubberBand"></DIV>
+<div id="imagePanel" style="position: absolute">
+    <form action="" onSubmit="return false;">
+	<input id='imagePanel' type="Image" src="car.jpg"  >
+	<input type="button" onclick="alert('hello')">
+	</form>
+</div>
+
+<script>
+ document.body.onload = function() {
+	document.getElementById("imagePanel").onmousedown = startRubber;
+	document.getElementById("imagePanel").onmouseup = stopRubber;
+ };
+ </script>
+<textarea id="logtext">
+log
+</textarea>
+</BODY>
+</HTML>

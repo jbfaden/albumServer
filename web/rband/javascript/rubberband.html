@@ -1,0 +1,72 @@
+<html>
+
+<body>
+
+<script language="JavaScript1.2" type="text/javascript">
+	var ie5 = (document.getElementById && document.all);
+	var ns6 = (document.getElementById && !document.all);
+	
+	function downMouse(){
+		window.status= 'downMouse';
+		document.getElementById("plano").getAttribute('x1').value=Xpos-document.getElementById("plano").offsetLeft;
+		document.getElementById("plano").getAttribute('y1').value=Ypos-document.getElementById("plano").offsetTop;
+		document.getElementById("marco").style.top=Ypos;
+		document.getElementById("marco").style.left=Xpos;
+		document.getElementById("marco").style.height=1;
+		document.getElementById("marco").style.width=1;
+		document.getElementById("marco").style.visibility="visible";
+		x1=Xpos;
+		y1=Ypos;
+		down=1;
+	}
+	
+	function trackMouse(e){
+		Xpos=(ie5)?event.x+window.document.body.scrollLeft:(ns6)?clientX=e.clientX+window.pageXOffset:false;
+		Ypos=(ie5)?event.y+window.document.body.scrollTop:(ns6)?clientY=e.clientY+window.pageYOffset:false;
+		if (down == 1){
+			window.status='trackMouse('+Xpos+','+Ypos+')';
+			document.getElementById("marco").style.height=Ypos-y1;
+			document.getElementById("marco").style.width=Xpos-x1;
+		}
+		window.status = "Xpos= "+ x1 +" "+ x2 + " Ypos= " + y1 +" "+y2;
+	}
+	
+	function upMouse(){
+		document.getElementById("plano").getAttribute('x2').value=Xpos-document.getElementById("plano").offsetLeft;
+		document.getElementById("plano").getAttribute('y2').value=Ypos-document.getElementById("plano").offsetTop;
+		x2=Xpos;
+		y2=Ypos;
+		down=0;
+	}
+	
+	function init(){ 
+		down=0;
+		x1=y1=x2=y2=0;
+	}
+	
+	function zoomin(p){
+
+	}
+	
+	document.onload= init();
+	document.onmousemove= trackMouse;
+</script>
+
+<FORM id="formu" METHOD="POST" ACTION="mapa.cgi">
+
+<center><table id="tabla" BORDER=1 COLS=2 NOSAVE >
+<tr NOSAVE>
+<td  NOSAVE WIDTH="500">
+
+<a  onMouseDown="downMouse()" onMouseUp="upMouse()">
+<img src="car.jpg" id="plano" x1="0" y1="0" x2="0" y2="0" >
+<div id="marco" style="position:absolute;  top:1; left:1; width:1; height: 1; z-index:2; visibility:hidden; border: 1px solid yellow">
+
+</div>
+</a>
+
+</td>
+
+<INPUT TYPE="submit" NAME="orden" VALUE="ZOOM IN" onclick=zoomin(this);return false; >
+
+</body>
