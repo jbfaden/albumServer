@@ -62,6 +62,8 @@ public class Media {
         
         if ( ext.equalsIgnoreCase("jpg" ) ) {
             return new Negative( id );
+        } else if ( ext.equalsIgnoreCase("png") ) {
+            return new Negative( id );
         } else if ( ext.equalsIgnoreCase("mpg" ) ) {
             return new Video( id );
         } else if ( ext.equalsIgnoreCase("mp4" ) ) {
