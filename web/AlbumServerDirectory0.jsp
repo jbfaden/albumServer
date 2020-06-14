@@ -63,13 +63,13 @@ This shows either the list of albums, or the media within an album.
                     if ( hidden ) {
                         out.println("HIDDEN");
                     }
+                    out.println( ""+label );
                     String [] notes= m.getNotes();
                     if ( notes.length>0 ) {
                         String shor= notes[0];
-                        if ( shor.length()>20 ) shor= shor.substring(0,20)+"...";
-                        out.println("<small>"+shor+"</small>");
+                        if ( shor.length()>40 ) shor= shor.substring(0,40)+"...";
+                        out.println("\n<br><small>"+shor+"</small>");
                     }
-                    out.println( "\n"+label );
                     out.println( "</td></tr>\n");
                     
                 }
