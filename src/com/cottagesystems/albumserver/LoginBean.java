@@ -155,14 +155,21 @@ public class LoginBean {
         }
     }
     
-    
-    
+    /**
+     * return the access associated with this request.
+     * @param request
+     * @return 
+     */
     public AccessBean getAccessBean(HttpServletRequest request) {
         AccessBean bean;
 
         // test access by ip table.
         String addressKey= request.getRemoteAddr();
         int i= addressKey.lastIndexOf('.');
+        if ( i==-1 && addressKey.equals("0:0:0:0:0:0:0:1") ) {
+            addressKey= "localhost";
+            i= addressKey.length();
+        }
         if ( ( ipaccess.containsKey( addressKey ) || ipaccess.containsKey(addressKey.substring(0,i) ) ) ) {
             String testUser= ipaccess.getProperty(request.getRemoteAddr() );
             // allow automatic log-in by IP address.
