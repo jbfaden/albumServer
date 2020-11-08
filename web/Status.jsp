@@ -41,6 +41,7 @@
         <%= cacheFile.canWrite() ? "(" + username + " can write)" : "<b>("+username + "cannot write)</b>" %>
         
         </p>
+        <p>Java: <%= System.getProperty("java.version") %>
         <%
             try {
                 com.cottagesystems.albumserver.LoginBean.reload();
