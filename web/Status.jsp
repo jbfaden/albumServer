@@ -16,9 +16,28 @@
         <title>Status Page</title>
     </head>
     <body>
-        <p>ImageDataBase: <%= Configuration.getImageDatabaseRoot() %></p>
-        <p>NotesRoot: <%= Configuration.getNotesRoot() %></p>
-        <p>CacheRoot: <%= Configuration.getCacheRoot() %></p>
+        <%
+            File cacheFile= new File( Configuration.getCacheRoot() );
+            File notesRoot= new File( Configuration.getNotesRoot() );
+            String username= java.lang.System.getenv("user.name");
+            try {
+                com.cottagesystems.albumserver.LoginBean.reload();
+                %>password.txt and ipaccess.txt were reloaded.<%
+            } catch ( Exception ex ) {
+                %>Reload again soon.<%
+            }
+        %>        
+        <p>The server pulls its albums from the ImageDataBase.  Each album
+            is a Unix folder containing png and other media files.<br>
+            ImageDataBase: <%= Configuration.getImageDatabaseRoot() %></p>
+        <p>The folder where notes are added to the server is called NotesRoot.  The server must
+            be able to write to this location.<br>
+            NotesRoot: <%= Configuration.getNotesRoot() %> <%= notesRoot.canWrite() ? "ok" : username + "cannot write" %></p>
+        <p>CacheRoot is where computed images are stored.<br>
+        CacheRoot: <%= Configuration.getCacheRoot() %>
+        <%= cacheFile.canWrite() ? "ok" : username + " cannot write" %>
+        
+        </p>
         <%
             try {
                 com.cottagesystems.albumserver.LoginBean.reload();
@@ -27,7 +46,6 @@
                 %>Reload again soon.<%
             }
         %>
-                
-        
+        <p><em><a href='AlbumServerContent0.jsp'>Return</a> to content.</em></p>
     </body>
 </html>
