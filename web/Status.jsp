@@ -28,7 +28,7 @@
                 %>Reload again soon.<%
             }
         %>        
-        <p>The server pulls its albums from the ImageDataBase.  Each album
+        <p>The server pulls its albums from the ImageDatabase.  Each album
             is a Unix folder containing png and other media files.<br>
             ImageDataBase: <%= Configuration.getImageDatabaseRoot() %>
             <%= dbRoot.canRead() ? "(" + username + " can read)" : "<b>("+username + "cannot read)</b" %></p>

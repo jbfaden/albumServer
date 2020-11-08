@@ -79,7 +79,7 @@ public class Video extends Media {
                 //Runtime.getRuntime().exec("ffmpeg -i " + video + " " + thumb);
                 //String s= "ffmpeg -i " + video + " " + thumb;
                 String s= "totem-video-thumbnailer -s 640 " + video + " " + thumb;
-                
+                System.err.println(s);
                 Runtime.getRuntime().exec(s);
 
                 //Runtime.getRuntime().exec("ffmpeg -i "+ video + " "+mp4 + " &" );
