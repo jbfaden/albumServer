@@ -49,5 +49,6 @@
             <li>timestamps in ids are used, when available.</li>
             <li>correcting the "calculating" icon, where the font was tiny.</li>
         </ul>
+        <p><em><a href='AlbumServerContent0.jsp'>Return</a> to content.</em></p>
     </body>
 </html>

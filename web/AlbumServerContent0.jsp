@@ -99,6 +99,7 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
         out.println( "<span style=\"color:grey\">" );
         if ( album==null ) {
             out.println( "<i>select an album from the list on the left.</i>");
+            out.println( "<p><em><a href='about.jsp'>about</a> this server</em></p>");
         } else {
             out.println( "<i>select an image from the list on the left</i>");
             out.println( "<br><br>" );
