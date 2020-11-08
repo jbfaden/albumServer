@@ -12,7 +12,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Stroke;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -42,24 +42,30 @@ public class Video extends Media {
         //capabilities.put( Capability.COPY_TO_CLIPBOARD.getClass(), Capability.COPY_TO_CLIPBOARD );
     }
 
+    @Override
     public String getIconURL() {
         return "<image src='PhotoServer?id=" + id + "&icon=1&size=120'>";
     }
 
+    @Override
     public String getURL() {
         return "<input type='image' src=\"PhotoServer?id=" + id + "\">";
     }
 
     @Override
     public Image getImageIcon() throws IOException {
-        String ss = id.replaceAll("AVI", "THM");
-        ss = ss.replaceAll("avi", "thm");
-        ss= ss.replace("mpg", "thm");
         
-        File f = new File(Configuration.getImageDatabaseRoot(), ss);
+        File f;
 
-        boolean doDecorate = true;
+        boolean doDecorate;
 
+        File convert=  new File(Configuration.getCacheRoot(), "convert/" );
+        if ( !convert.exists() ) {
+            if ( !convert.mkdirs() ) {
+                throw new IOException("unable to create folder "+convert);
+            }
+        }
+        
         File thumb = new File(Configuration.getCacheRoot(), "convert/" + id + ".png");
         
         if (!thumb.exists()) {
@@ -73,13 +79,13 @@ public class Video extends Media {
                 //Runtime.getRuntime().exec("ffmpeg -i " + video + " " + thumb);
                 //String s= "ffmpeg -i " + video + " " + thumb;
                 String s= "totem-video-thumbnailer -s 640 " + video + " " + thumb;
-                System.err.println(s);
+                
                 Runtime.getRuntime().exec(s);
 
                 //Runtime.getRuntime().exec("ffmpeg -i "+ video + " "+mp4 + " &" );
             }
             f = thumb;
-            doDecorate = false; // totem-video-thumbnailer decorates.
+            doDecorate = true; // totem-video-thumbnailer decorates.
         } else {
             f= thumb;
             doDecorate = false; // assume thumb has decorations.
@@ -103,17 +109,14 @@ public class Video extends Media {
             g.setColor(Color.BLACK);
             g.setStroke(new BasicStroke(2.0f));
             int step= image.getWidth()*7/150;
-            Stroke s= new BasicStroke( step/7.f );
-            g.setStroke(s);
-            g.drawLine(1, 0, 1, image.getHeight());
-            g.drawLine(step, 0, step, image.getHeight());
             for (int i = 0; i < image.getHeight(); i += step-1) {
-                g.drawLine(0, i, step, i);
+                g.fill( new RoundRectangle2D.Double( 5, i+5, step-10, step-10, 3, 3 ) );
             }
         }
         return image;
     }
 
+    @Override
     public Image getImage() throws IOException {
         return getImageIcon();
     }
