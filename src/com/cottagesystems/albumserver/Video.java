@@ -15,7 +15,9 @@ import java.awt.Image;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -77,19 +79,22 @@ public class Video extends Media {
             File video = new File(Configuration.getImageDatabaseRoot(), id);
             //File mp4 = new File(Configuration.getImageDatabaseRoot(), id.replaceAll(".avi", ".mp4"));
             if (!thumb.exists()) {
+                thumb.getParentFile().mkdirs();
+                //System.err.println("ffmpeg -i " + video + " " + thumb);
+                //Runtime.getRuntime().exec("ffmpeg -i " + video + " " + thumb);
+                //String s= "ffmpeg -i " + video + " " + thumb;
+                String s= "/usr/bin/totem-video-thumbnailer -s 640 " + video + " " + thumb;
+                System.err.println(s);
+                ProcessBuilder pb= new ProcessBuilder(s.split("\\s") );
+                Process p= pb.start();
                 try {
-                    thumb.getParentFile().mkdirs();
-                    //System.err.println("ffmpeg -i " + video + " " + thumb);
-                    //Runtime.getRuntime().exec("ffmpeg -i " + video + " " + thumb);
-                    //String s= "ffmpeg -i " + video + " " + thumb;
-                    String s= "/usr/bin/totem-video-thumbnailer -s 640 " + video + " " + thumb;
-                    System.err.println(s);
-                    Process p= Runtime.getRuntime().exec(s);
                     if ( !p.waitFor( 30, TimeUnit.SECONDS ) ) {
-                        throw new IllegalArgumentException("process failed to return");
+                        try ( InputStream in= p.getErrorStream(); 
+                                FileOutputStream fout= new FileOutputStream( "/home/jbf/log/albumServer/" + id.replaceAll("\\/", "_") + ".err" ) ) {
+                            Util.copy( in, fout);
+                        }
+                        throw new IllegalArgumentException("process failed to return");                            
                     }
-                    
-                    //Runtime.getRuntime().exec("ffmpeg -i "+ video + " "+mp4 + " &" );
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Video.class.getName()).log(Level.SEVERE, null, ex);
                 }
