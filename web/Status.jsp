@@ -17,6 +17,7 @@
     </head>
     <body>
         <%
+            File dbRoot = new File( Configuration.getImageDatabaseRoot() );
             File cacheFile= new File( Configuration.getCacheRoot() );
             File notesRoot= new File( Configuration.getNotesRoot() );
             String username= java.lang.System.getProperty("user.name");
@@ -29,13 +30,15 @@
         %>        
         <p>The server pulls its albums from the ImageDataBase.  Each album
             is a Unix folder containing png and other media files.<br>
-            ImageDataBase: <%= Configuration.getImageDatabaseRoot() %></p>
+            ImageDataBase: <%= Configuration.getImageDatabaseRoot() %>
+            <%= dbRoot.canRead() ? "(" + username + " can read)" : "<b>("+username + "cannot read)</b" %></p>
         <p>The folder where notes are added to the server is called NotesRoot.  The server must
             be able to write to this location.<br>
-            NotesRoot: <%= Configuration.getNotesRoot() %> <%= notesRoot.canWrite() ? "ok" : username + "cannot write" %></p>
+            NotesRoot: <%= Configuration.getNotesRoot() %> 
+               <%= notesRoot.canWrite() ? "(" + username + " can write)" : "<b>("+username + "cannot write)</b" %></p>
         <p>CacheRoot is where computed images are stored.<br>
         CacheRoot: <%= Configuration.getCacheRoot() %>
-        <%= cacheFile.canWrite() ? "ok" : "<b>" + username + " cannot write</b>" %>
+        <%= cacheFile.canWrite() ? "(" + username + " can write)" : "<b>("+username + "cannot write)</b>" %>
         
         </p>
         <%
