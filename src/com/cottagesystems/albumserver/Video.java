@@ -82,7 +82,7 @@ public class Video extends Media {
                     //System.err.println("ffmpeg -i " + video + " " + thumb);
                     //Runtime.getRuntime().exec("ffmpeg -i " + video + " " + thumb);
                     //String s= "ffmpeg -i " + video + " " + thumb;
-                    String s= "totem-video-thumbnailer -s 640 " + video + " " + thumb;
+                    String s= "/usr/bin/totem-video-thumbnailer -s 640 " + video + " " + thumb;
                     System.err.println(s);
                     Process p= Runtime.getRuntime().exec(s);
                     if ( !p.waitFor( 30, TimeUnit.SECONDS ) ) {
