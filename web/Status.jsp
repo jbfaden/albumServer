@@ -19,7 +19,7 @@
         <%
             File cacheFile= new File( Configuration.getCacheRoot() );
             File notesRoot= new File( Configuration.getNotesRoot() );
-            String username= java.lang.System.getenv("user.name");
+            String username= java.lang.System.getProperty("user.name");
             try {
                 com.cottagesystems.albumserver.LoginBean.reload();
                 %>password.txt and ipaccess.txt were reloaded.<%
@@ -35,7 +35,7 @@
             NotesRoot: <%= Configuration.getNotesRoot() %> <%= notesRoot.canWrite() ? "ok" : username + "cannot write" %></p>
         <p>CacheRoot is where computed images are stored.<br>
         CacheRoot: <%= Configuration.getCacheRoot() %>
-        <%= cacheFile.canWrite() ? "ok" : username + " cannot write" %>
+        <%= cacheFile.canWrite() ? "ok" : "<b>" + username + " cannot write</b>" %>
         
         </p>
         <%
