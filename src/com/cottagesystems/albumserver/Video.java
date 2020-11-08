@@ -14,10 +14,12 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,6 +59,28 @@ public class Video extends Media {
         return "<input type='image' src=\"PhotoServer?id=" + id + "\">";
     }
 
+//    private class StreamGobbler extends Thread {
+//        InputStream is;
+//
+//        // reads everything from is until empty. 
+//        StreamGobbler(InputStream is) {
+//            this.is = is;
+//        }
+//
+//        @Override
+//        public void run() {
+//            try {
+//                InputStreamReader isr = new InputStreamReader(is);
+//                BufferedReader br = new BufferedReader(isr);
+//                String line=null;
+//                while ( (line = br.readLine()) != null)
+//                    System.err.println(line);    
+//            } catch (IOException ioe) {
+//                ioe.printStackTrace();  
+//            }
+//        }
+//    }
+    
     @Override
     public Image getImageIcon() throws IOException {
         
@@ -86,15 +110,21 @@ public class Video extends Media {
                 String s= "/usr/bin/totem-video-thumbnailer -s 640 " + video + " " + thumb;
                 System.err.println(s);
                 ProcessBuilder pb= new ProcessBuilder(s.split("\\s") );
+                pb.environment().put( "DISPLAY", "localhost:2" );
                 Process p= pb.start();
+                //StreamGobbler ins= new StreamGobbler(p.getInputStream());
+                //StreamGobbler errs= new StreamGobbler(p.getErrorStream());
+                //ins.start();
+                //errs.start();
+                
                 try {
                     if ( !p.waitFor( 30, TimeUnit.SECONDS ) ) {
-                        try ( InputStream in= p.getErrorStream(); 
-                                FileOutputStream fout= new FileOutputStream( "/home/jbf/log/albumServer/" + id.replaceAll("\\/", "_") + ".err" ) ) {
-                            Util.copy( in, fout);
-                        }
                         throw new IllegalArgumentException("process failed to return");                            
                     }
+                    if ( p.exitValue()!=0 ) {
+                        System.out.println("exit code: "+p.exitValue());
+                    }
+                    
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Video.class.getName()).log(Level.SEVERE, null, ex);
                 }
