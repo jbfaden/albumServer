@@ -14,12 +14,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,8 +51,8 @@ public class Video extends Media {
     }
 
     @Override
-    public String getURL() {
-        return "<input type='image' src=\"PhotoServer?id=" + id + "\">";
+    public String getURL() { 
+        return "<a href='videoPlayer.jsp?id="+id+"'><img src=\"PhotoServer?id=" + id + "\"></a>";
     }
 
 //    private class StreamGobbler extends Thread {
