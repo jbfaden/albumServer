@@ -6,8 +6,6 @@
 
 package com.cottagesystems.albumserver;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.*;
 
 import javax.servlet.*;
@@ -20,22 +18,26 @@ import javax.servlet.http.*;
  */
 public class MediaServer extends HttpServlet {
    
+    private static File reformatFile( String id ) {
+        File f= new File( Configuration.getCacheRoot(), "reformat/"+id+".mp4" );
+        if ( f.exists() ) {
+            return f;
+        } else {
+            return null;
+        }
+    }
     
-    /** Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        
-        String id= request.getParameter("id");
-        
-        if ( id.contains("..") ) throw new IllegalArgumentException("attempt to access area outside of image database.");
-        
-        String mime=null;
+    public static String mimeForExt( String id ) {
         
         String ext= id.substring( id.lastIndexOf(".")+1 ).toLowerCase();
         
+        File f= reformatFile( id );
+        if ( f!=null ) {
+            id= f.getName();
+            ext= id.substring( id.lastIndexOf(".")+1 ).toLowerCase();
+        }
+        
+        String mime;
         if ( ext.equals("mpg") ) {
             mime= "video/mpg";
         } else if ( ext.equals("avi") ) {
@@ -48,10 +50,28 @@ public class MediaServer extends HttpServlet {
             mime= "text/html;charset=UTF-8";
         } else if ( ext.equals("wav" ) ) {
             mime= "audio/wav";
+        } else {
+            mime= "application";
         }
+        return mime;
+                
+    }
+    
+    /** Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * @param request servlet request
+     * @param response servlet response
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
         
+        String id= request.getParameter("id");
         
-        File f= new File( Configuration.getImageDatabaseRoot(), id );
+        if ( id.contains("..") ) throw new IllegalArgumentException("attempt to access area outside of image database.");
+        
+        String mime= mimeForExt(id);
+        
+        File f= reformatFile( id );
+        if ( f==null ) f=new File( Configuration.getImageDatabaseRoot(), id );
         
         if ( mime!=null ) response.setContentType( mime );
         response.setContentLength( (int)f.length() );
