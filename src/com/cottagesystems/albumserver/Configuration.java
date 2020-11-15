@@ -25,17 +25,24 @@ public class Configuration {
     
     static Boolean isXP= new Boolean( System.getProperty("os.name").equals("Windows XP") );
     
+    private static String imageDatabaseRoot;
+    
     /**
      * soon-to-be read only folder of "negatives"
      * @return
      */
     public static String getImageDatabaseRoot() {
-        if (  isXP ) {
-            return "l:/imageDatabase/";
-        } else {
-            return "/home/jbf/imageDatabase/";
-            //return "/media/mini/documents/pictures/";
+        if (imageDatabaseRoot == null) {
+            if (System.getProperty("imageDatabaseRoot") != null) {
+                imageDatabaseRoot = System.getProperty("imageDatabaseRoot");
+            } else if (isXP) {
+                imageDatabaseRoot = "l:/imageDatabase/";
+            } else {
+                imageDatabaseRoot = "/Users/jbf/imageDatabase/";
+                //return "/media/mini/documents/pictures/";
+            }
         }
+        return imageDatabaseRoot;
     }
     
     /**
@@ -60,6 +67,8 @@ public class Configuration {
         return p;
     }
     
+    private static String imageDatabaseCacheRoot=null;
+    
     /**
      * Return the writable folder that is not necessarily backed up, used to
      * store cached resources.  This contains subdirectories:<ul>
@@ -71,12 +80,17 @@ public class Configuration {
      * @return the writable folder for cache items.
      */
     public static String getCacheRoot() {
-        if (  isXP ) {
-            return "l:/imageDatabase/cache/";
-        } else {
-            return "/home/jbf/imageDatabaseCache/";
-            //return "/media/mini/documents/pictures/cache/";
+        if (imageDatabaseCacheRoot == null) {
+            if (System.getProperty("imageDatabaseCacheRoot") != null) {
+                imageDatabaseCacheRoot = System.getProperty("imageDatabaseCacheRoot");
+            } else if (isXP) {
+                imageDatabaseCacheRoot = "l:/imageDatabase/cache/";
+            } else {
+                imageDatabaseCacheRoot = "/Users/jbf/imageDatabaseCache/";
+                //return "/media/mini/documents/pictures/cache/";
+            }
         }
+        return imageDatabaseCacheRoot;
     }
     
     /**
