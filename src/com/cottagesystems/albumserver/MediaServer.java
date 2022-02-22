@@ -71,7 +71,7 @@ public class MediaServer extends HttpServlet {
         String mime= mimeForExt(id);
         
         File f= reformatFile( id );
-        if ( f==null ) f=new File( Configuration.getImageDatabaseRoot(), id );
+        if ( f==null ) f=new File( Configuration.getImageDatabaseRoot(), id ); // Sonatype lift okay, see check on line 69.
         
         if ( mime!=null ) response.setContentType( mime );
         response.setContentLength( (int)f.length() );
