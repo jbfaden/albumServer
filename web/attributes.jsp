@@ -18,10 +18,14 @@ String album= request.getParameter("album");
 if (action==null ) action="";
 
 Properties p= new Properties();
-File propFile= new File( Configuration.getCacheRoot() + "attr/" + id );
+File propFile= new File( Configuration.getNotesRoot() + id + ".properties" );
 propFile.getParentFile().mkdirs();
 if ( propFile.exists() ) {
     p.load( new FileInputStream( propFile ) );
+}
+
+if ( !Configuration.isValidAttribute(name) ) {
+    throw new IllegalArgumentException("invalid attribute name");
 }
 
 if ( action.equals("set") ) {

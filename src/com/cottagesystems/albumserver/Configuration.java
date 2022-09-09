@@ -129,8 +129,9 @@ public class Configuration {
      */
     public static Properties getAttr( String id ) {
         Properties p= new Properties();
-        File propFile= new File( Configuration.getCacheRoot() + "attr/" + id );
-        propFile.getParentFile().mkdirs();
+        File propFile= new File( Configuration.getNotesRoot() + id + ".properties" );
+        File parent= propFile.getParentFile();
+        if ( !parent.exists() ) parent.mkdirs();
         if ( propFile.exists() ) {
             try ( Reader r=new FileReader(propFile) ) {
                 p.load(r);
@@ -141,14 +142,15 @@ public class Configuration {
         return p;
     }
     
-    private static String imageDatabaseCacheRoot=null;
+    public static boolean isValidAttribute( String name ) {
+        return ( name.equals("hidden") || name.equals("like") );
+    }
     
     /**
      * Return the writable folder that is not necessarily backed up, used to
      * store cached resources.  This contains subdirectories:<ul>
      * <li>half: images reduced to half resolution
      * <li>icons: thumbnail icons for resources
-     * <li>attr: properties file for any image.
      * </ul>
      * 
      * @return the writable folder for cache items.
