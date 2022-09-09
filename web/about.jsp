@@ -13,9 +13,15 @@
     </head>
     <body>
         <h1>Thanks to open-source:</h1><ul>
-            <li>metadata extractor: https://github.com/drewnoakes/metadata-extractor</l1>
+            <li>metadata extractor: https://github.com/drewnoakes/metadata-extractor</li>
+            <li>totem-video-thumbnailer</li>
         </ul>
+        
         <h1>AlbumServer</h1>
+        <h3>20220909a</h3><ul>
+            <li>password file is kept in home now.
+            <li>use GitLab to provide notes.
+        </ul>
         <h3>20160126a</h3><ul>
             <li>experiments with orientation, though I think this is still broken.</li>
             <li>read and provide link for GPS metadata.</li>

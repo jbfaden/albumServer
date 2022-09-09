@@ -104,16 +104,16 @@ public class LoginBean {
     }
 
     private static void readPasswords() {
-        File cacheRoot= new File( Configuration.getCacheRoot() );
+        File cacheRoot= new File( Configuration.getHome() );
         if ( !cacheRoot.exists() ) {
             if ( !cacheRoot.mkdirs() ) {
                 throw new IllegalArgumentException("unable to make cacheRoot");
             }
         }
-        File passwordFile=  new File( Configuration.getCacheRoot() + "/passwords.txt" );
+        File passwordFile=  new File( Configuration.getHome() + "/passwords.txt" );
         if ( !passwordFile.exists() ) {
             try ( FileWriter fw= new FileWriter(passwordFile) ) {
-                fw.append("# This list contains username password combinations.");
+                fw.append("# This list contains username password combinations.\n");
                 fw.append("# username=password\n");
                 fw.append("# grandmaHome=x\n");
             } catch (IOException ex) {
@@ -132,7 +132,7 @@ public class LoginBean {
     }
     
     private static void readIpAccess() {
-        File limitedPublicFile=  new File( Configuration.getCacheRoot() + "/ipaccess.txt" );
+        File limitedPublicFile=  new File( Configuration.getHome() + "/ipaccess.txt" );
         if ( !limitedPublicFile.exists() ) {
             try ( FileWriter fw= new FileWriter(limitedPublicFile) ) {
                 fw.append("# This list contains IP addresses that will resolve to x or a username.\n");
