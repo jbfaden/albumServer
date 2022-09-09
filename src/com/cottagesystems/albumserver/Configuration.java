@@ -28,6 +28,7 @@ import java.util.logging.Logger;
  */
 public class Configuration {
     
+    private static String home = null;
     private static String imageDatabaseRoot = null;
     private static String cacheRoot = null;
     private static String notesRoot = null;
@@ -43,9 +44,14 @@ public class Configuration {
     
     public static void load() throws FileNotFoundException {
         try {
-            String home=null;
-            if ( home==null ) home= System.getProperty("ALBUM_SERVER_HOME");
-            if ( home==null ) home= "/tmp/albumserver/";
+            
+            if ( Configuration.home==null ) {
+                String home=null;
+                if ( home==null ) home= System.getProperty("ALBUM_SERVER_HOME");
+                if ( home==null ) home= "/tmp/albumserver/";
+                Configuration.home= home;
+            }
+            
             Properties prop= new Properties();
             File configFile= new File( home + "config.properies" );
             if ( !configFile.exists() ) {
@@ -94,6 +100,15 @@ public class Configuration {
             Logger.getLogger(Configuration.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+    }
+    
+    /**
+     * return the home directory containing secure information like the
+     * configuration and passwords file.
+     * @return 
+     */
+    public static String getHome() {
+        return home;
     }
     
     /**
