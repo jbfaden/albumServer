@@ -111,10 +111,10 @@ public class Media {
      * @return a list of notes or captions 
      */
     public String[] getNotes() {
-        String metaFileStr= Configuration.getNotesRoot() + id + ".txt";
+        String metaFileStr= Configuration.getNotesRoot() + id + ".md";
         File metaFile= new File( metaFileStr );
         if ( !metaFile.exists() ) {
-            metaFile= new File( Configuration.getNotesRoot() + id + ".md" );
+            metaFile= new File( Configuration.getNotesRoot() + id + ".txt" );
         }
         boolean isTrimming= true;
         if ( metaFile.exists() ) {
