@@ -53,7 +53,7 @@ public class Configuration {
             }
             
             Properties prop= new Properties();
-            File configFile= new File( home + "config.properies" );
+            File configFile= new File( home + "config.properties" );
             if ( !configFile.exists() ) {
                 if ( !configFile.getParentFile().exists() ) {
                     if ( !configFile.getParentFile().mkdir() ) {
