@@ -1,3 +1,6 @@
+<%@page import="org.commonmark.renderer.html.HtmlRenderer"%>
+<%@page import="org.commonmark.node.Node"%>
+<%@page import="org.commonmark.parser.Parser"%>
 <%@page import="java.net.URL"%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
@@ -264,7 +267,16 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
             // check meta data
             String[] notes= media.getNotes();
             if ( notes!=null ) {
-                for ( int i=0; i<notes.length; i++ ) out.println(notes[i]+"<br>");
+                boolean useMarkdown= true;
+                if ( useMarkdown ) {
+                    Parser parser = Parser.builder().build();
+                    Node document= parser.parse( String.join("\n",notes ) );
+                    HtmlRenderer renderer = HtmlRenderer.builder().build();
+                    String html = renderer.render(document);  // "<p>This is <em>Sparta</em><
+                    out.println(html);
+                } else {
+                    for ( int i=0; i<notes.length; i++ ) out.println(notes[i]+"<br>");
+                }
             }
 
             out.println( "</td></tr>\n" );
