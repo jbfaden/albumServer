@@ -150,7 +150,7 @@ public class Media {
      * @param meta null or the notes.
      */
     public void setNotes( String[] meta ) {
-        String metaFileStr= Configuration.getNotesRoot() + id + ".txt";
+        String metaFileStr= Configuration.getNotesRoot() + id + ".md";
         File metaFile= new File( metaFileStr );
         File tFile= new File( metaFileStr+".temp" );
 

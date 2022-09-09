@@ -1,6 +1,7 @@
 
 package com.cottagesystems.albumserver;
 
+import java.io.File;
 import java.net.URL;
 
 /**
@@ -15,8 +16,14 @@ public class GitCapability implements Capability {
         if ( s==null ) {
             return null;
         } else {
-            String metaFileStr= Configuration.getNotesURL().toString() + media.getId() + ".md";
-            return "<a href=\"" + metaFileStr + "\" target='_blank'>notes</a>";
+            String notesFile= Configuration.getNotesRoot() + media.getId() + ".md";
+            if ( new File(notesFile).exists() ) {
+                String metaFileStr= Configuration.getNotesURL().toString() + media.getId() + ".md";
+                return "<a href=\"" + metaFileStr + "\" target='_blank'>gitlabs</a>";
+            } else {
+                return "notes";                
+            }
+            
         }
     }
 

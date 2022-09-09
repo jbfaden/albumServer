@@ -160,7 +160,7 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
                 
                 out.println( "</td>");
                 out.println( "<td width=537>" );
-                out.println( "<p>"+album.getId()+"&gt;<b>"+media.getId().substring(album.getId().length()+1)+"</b>" );
+                out.println( "<p>"+album.getId()+"/<b>"+media.getId().substring(album.getId().length()+1)+"</b>" );
                 //if ( rotate!=0 ) out.println( "(rotate="+rotate+")" );
                 out.println( "</td>");
                 out.println("</tr>");
@@ -227,7 +227,7 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
 
                 if ( access!=null && access.hasRole( AccessBean.ROLE_AUTHOR ) ) {
                     String returnUrl= "AlbumServerContent0.jsp?id="+media.getId()+"&album="+album.getId()+"&rotate="+rotate;
-                    out.println( "<a align=left href=\"AlbumServerAdmin0.jsp?id="+media.getId()+"&returnUrl="+URLEncoder.encode(returnUrl,"UTF-8")+"\">edit</a> " );
+                    out.println( "<a align=left href=\"AlbumServerAdmin0.jsp?id="+media.getId()+"&returnUrl="+URLEncoder.encode(returnUrl,"UTF-8")+"\">edit notes</a> " );
 
                     Capability like= media.getCapability( Capability.LIKE_DISLIKE.getClass(), access );
                     if ( like!=null ) {
