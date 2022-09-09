@@ -11,7 +11,11 @@ public class HideCapability implements Capability {
 
     @Override
     public String getHtmlPresentor(Media media, AccessBean access) {
-        return "<a href=\"attributes.jsp?id="+media.getId()+"&action=set&name=hidden&value=true\">hide</a>";
+        if ( isHidden(media) ) {
+            return "<a href=\"attributes.jsp?id="+media.getId()+"&action=set&name=hidden&value=false\">unhide</a>";
+        } else {
+            return "<a href=\"attributes.jsp?id="+media.getId()+"&action=set&name=hidden&value=true\">hide</a>";
+        }
     }
 
     /**
