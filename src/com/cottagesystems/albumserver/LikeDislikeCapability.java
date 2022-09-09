@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package com.cottagesystems.albumserver;
 
@@ -11,13 +7,12 @@ package com.cottagesystems.albumserver;
  */
 public class LikeDislikeCapability implements Capability {
 
+    @Override
     public String getHtmlPresentor(Media media, AccessBean access) {
         return
-        "<a href=\"attributes.jsp?id="+media.getId()+"&action=set&name=like&value=-2\">-2</a>" +
-        "<a href=\"attributes.jsp?id="+media.getId()+"&action=set&name=like&value=-1\">-1</a>" +
-        "<a href=\"attributes.jsp?id="+media.getId()+"&action=set&name=like&value=0\">0</a>" +
-        "<a href=\"attributes.jsp?id="+media.getId()+"&action=set&name=like&value=1\">+1</a>" +
-        "<a href=\"attributes.jsp?id="+media.getId()+"&action=set&name=like&value=2\">+2</a>";
+        "[<a href=\"attributes.jsp?id="+media.getId()+"&action=set&name=like&value=-2\">&#x1F44E;</a>" +
+        "<a href=\"attributes.jsp?id="+media.getId()+"&action=set&name=like&value=0\">0</a> " +
+        "<a href=\"attributes.jsp?id="+media.getId()+"&action=set&name=like&value=2\">&#x1F44D;</a>]";
     }
 
 }
