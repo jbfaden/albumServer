@@ -93,6 +93,18 @@ public class Configuration {
                 }
             }
             
+            if ( !notesRoot.endsWith("/") ) {
+                notesRoot= notesRoot + "/";
+            }
+            
+            if ( !imageDatabaseRoot.endsWith("/") ) {
+                imageDatabaseRoot= imageDatabaseRoot + "/";
+            }
+
+            if ( !cacheRoot.endsWith("/") ) {
+                cacheRoot= cacheRoot + "/";
+            }
+            
         } catch (IOException ex) {
             if ( ex instanceof FileNotFoundException ) {
                 throw (FileNotFoundException)ex;
