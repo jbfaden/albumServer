@@ -8,7 +8,7 @@ package com.cottagesystems.albumserver;
 public class DownloadRawCapability implements Capability {
     @Override
     public String getHtmlPresentor(Media media, AccessBean access) {
-        return "<a href=\"MediaServer?id="+media.getId()+"\" target=\"_blank\">raw</a> ";
+        return "<a href=\"MediaServer?id="+media.getId()+"\" target=\"_blank\">download</a> ";
     }
 
 }
