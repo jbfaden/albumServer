@@ -10,9 +10,14 @@
 package com.cottagesystems.albumserver;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URL;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,25 +28,79 @@ import java.util.logging.Logger;
  */
 public class Configuration {
     
-    static Boolean isXP= new Boolean( System.getProperty("os.name").equals("Windows XP") );
+    private static String imageDatabaseRoot = null;
+    private static String cacheRoot = null;
+    private static String notesRoot = null;
+    private static URL notesURL = null;
+            
+    /**
+     * return true if the configuration has not been loaded.
+     * @return 
+     */
+    public static boolean isNotLoaded() {
+        return imageDatabaseRoot==null;
+    }
     
-    private static String imageDatabaseRoot;
+    public static void load() throws FileNotFoundException {
+        try {
+            String home=null;
+            if ( home==null ) home= System.getProperty("ALBUM_SERVER_HOME");
+            if ( home==null ) home= "/tmp/albumserver/";
+            Properties prop= new Properties();
+            File configFile= new File( home + "config.properies" );
+            if ( !configFile.exists() ) {
+                if ( !configFile.getParentFile().exists() ) {
+                    if ( !configFile.getParentFile().mkdir() ) {
+                        throw new IllegalArgumentException("can't make the config directory");
+                    }
+                }
+                FileWriter fw= new FileWriter(configFile);
+                fw.write("imageDatabaseRoot=/tmp/albumserver/imageDatabase/\n"
+                        + "cacheRoot=/tmp/albumServer/imageCache/\n"
+                        + "notesRoot=/tmp/albumServer/notes/\n"
+                        + "notesURL="
+                );
+                fw.close();
+            }
+            prop.load( new InputStreamReader( new FileInputStream( configFile ) ) );
+            imageDatabaseRoot = prop.getProperty("imageDatabaseRoot");
+            cacheRoot = prop.getProperty("cacheRoot");
+            notesRoot = prop.getProperty("notesRoot");
+            String notesURLString = prop.getProperty("notesURL",null);
+            if ( notesURLString==null ) {
+                notesURL = null;
+            } else {
+                notesURL = new URL( notesURLString );
+            }
+            
+            if ( !imageDatabaseRoot.startsWith("/") ) {
+                imageDatabaseRoot= home + imageDatabaseRoot;
+            }
+            
+            if ( !cacheRoot.startsWith("/") ) {
+                cacheRoot = home + cacheRoot;
+            }
+            
+            if ( !notesRoot.startsWith("http") ) {
+                if ( !notesRoot.startsWith("/") ) {
+                    notesRoot = home + notesRoot;
+                }
+            }
+            
+        } catch (IOException ex) {
+            if ( ex instanceof FileNotFoundException ) {
+                throw (FileNotFoundException)ex;
+            }
+            Logger.getLogger(Configuration.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
     
     /**
      * soon-to-be read only folder of "negatives"
      * @return
      */
     public static String getImageDatabaseRoot() {
-        if (imageDatabaseRoot == null) {
-            if (System.getProperty("imageDatabaseRoot") != null) {
-                imageDatabaseRoot = System.getProperty("imageDatabaseRoot");
-            } else if (isXP) {
-                imageDatabaseRoot = "l:/imageDatabase/";
-            } else {
-                imageDatabaseRoot = "/Users/jbf/imageDatabase/";
-                //return "/media/mini/documents/pictures/";
-            }
-        }
         return imageDatabaseRoot;
     }
     
@@ -80,17 +139,7 @@ public class Configuration {
      * @return the writable folder for cache items.
      */
     public static String getCacheRoot() {
-        if (imageDatabaseCacheRoot == null) {
-            if (System.getProperty("imageDatabaseCacheRoot") != null) {
-                imageDatabaseCacheRoot = System.getProperty("imageDatabaseCacheRoot");
-            } else if (isXP) {
-                imageDatabaseCacheRoot = "l:/imageDatabase/cache/";
-            } else {
-                imageDatabaseCacheRoot = "/Users/jbf/imageDatabaseCache/";
-                //return "/media/mini/documents/pictures/cache/";
-            }
-        }
-        return imageDatabaseCacheRoot;
+        return cacheRoot;
     }
     
     /**
@@ -106,15 +155,16 @@ public class Configuration {
      * Arbitrary text is put here.
      * @return
      */
-    
     public static String getNotesRoot() {
-        if ( isXP ) {
-            return "l:/imageDatabase/";
-        } else {
-            return "/home/jbf/imageDatabase/";
-            //return "/media/mini/documents/pictures/cache";
-        }
+        return notesRoot;
     }
     
+    /**
+     * null or the location of a remote store of notes, like a Gitlabs server.
+     * @return 
+     */
+    public static URL getNotesURL() {
+        return notesURL;
+    }
         
 }

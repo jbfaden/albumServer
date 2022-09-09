@@ -20,6 +20,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -48,6 +50,7 @@ public class Media {
         capabilities.put( Capability.DOWNLOAD_RAW.getClass(), Capability.DOWNLOAD_RAW );
         capabilities.put( Capability.HIDE.getClass(), Capability.HIDE );
         capabilities.put( Capability.LIKE_DISLIKE.getClass(), Capability.LIKE_DISLIKE );
+        capabilities.put( Capability.GIT.getClass(), Capability.GIT );
     }
     
     /**
@@ -110,6 +113,9 @@ public class Media {
     public String[] getNotes() {
         String metaFileStr= Configuration.getNotesRoot() + id + ".txt";
         File metaFile= new File( metaFileStr );
+        if ( !metaFile.exists() ) {
+            metaFile= new File( Configuration.getNotesRoot() + id + ".md" );
+        }
         boolean isTrimming= true;
         if ( metaFile.exists() ) {
             ArrayList list= new ArrayList();
@@ -248,7 +254,7 @@ public class Media {
      */
     public String getURL() {
         //return "<button id='downloadButton' onclick=\"document.location='MediaServer?id="+id+" ' \">download<button>";
-        return "<a href='MediaServer?id="+id+" ' >download</a>";
+        return "<a href='MediaServer?id="+id+" ' target='_blank'>download</a>";
     }
     
     public String getURL( String params ) {

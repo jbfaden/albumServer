@@ -19,10 +19,17 @@
         <meta name="version" content="20200614">
     </head>
     
+    
+    <%
+    if ( Configuration.isNotLoaded() ) {
+        Configuration.load();
+    }
+    %>
+    
     <jsp:useBean id="loginBean" class="com.cottagesystems.albumserver.LoginBean" scope="request">
         
     </jsp:useBean>
-
+    
     <%
         String album= request.getParameter("album");
         if ( album==null ) album="";
@@ -36,8 +43,8 @@
                 <!-- here -->
 <%     
              boolean hasIndex= true;
-             File f= new File( Configuration.getImageDatabaseRoot(), "cache/"+ album +".html" );
-             if ( !f.exists() ) hasIndex= false;
+                 File f= new File( Configuration.getImageDatabaseRoot(), "cache/"+ album +".html" );
+                 if ( !f.exists() ) hasIndex= false;
              
              if ( !hasIndex || album==null || album.equals("") ) {   %>
              <frame src="AlbumServerDirectory0.jsp?album=<%=album%>&id=<%=id%>" name="directory" >

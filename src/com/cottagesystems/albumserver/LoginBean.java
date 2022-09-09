@@ -104,6 +104,12 @@ public class LoginBean {
     }
 
     private static void readPasswords() {
+        File cacheRoot= new File( Configuration.getCacheRoot() );
+        if ( !cacheRoot.exists() ) {
+            if ( !cacheRoot.mkdirs() ) {
+                throw new IllegalArgumentException("unable to make cacheRoot");
+            }
+        }
         File passwordFile=  new File( Configuration.getCacheRoot() + "/passwords.txt" );
         if ( !passwordFile.exists() ) {
             try ( FileWriter fw= new FileWriter(passwordFile) ) {

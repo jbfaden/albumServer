@@ -1,3 +1,4 @@
+<%@page import="java.net.URL"%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@page import="com.cottagesystems.albumserver.*, java.util.*, java.io.File, java.net.URLEncoder " %> 
@@ -202,6 +203,11 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
                 if ( swf!=null ) {
                     out.println( swf.getHtmlPresentor(media, access) );
                 }
+                
+                Capability git= media.getCapability( GitCapability.INSTANCE.getClass(), access );
+                if ( git!=null ) {
+                    out.println( git.getHtmlPresentor(media, access) );
+                }                
 
                 DownloadModifiedCapability dmc= (DownloadModifiedCapability)media.getCapability( Capability.DOWNLOAD_MODIFIED.getClass(), access );
                 if ( dmc!=null ) {

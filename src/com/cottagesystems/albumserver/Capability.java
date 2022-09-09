@@ -31,6 +31,8 @@ public interface Capability {
 
     public Capability LIKE_DISLIKE= new LikeDislikeCapability();
 
+    public Capability GIT = new GitCapability();
+    
     /**
      * returns the html string that presents the capability
      * @param media
