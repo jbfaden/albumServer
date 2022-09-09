@@ -174,6 +174,13 @@ public class Media {
             }
         }
         
+        if ( !tFile.getParentFile().exists() ) {
+            if ( !tFile.getParentFile().mkdirs() ) {
+                logger.log(Level.WARNING, "unable to mkdir {0}", tFile.getParentFile());
+                return;
+            }
+        }
+        
         try {
             try (BufferedWriter writer = new BufferedWriter( new FileWriter( tFile ) )) {
                 for ( String meta1 : meta ) {
