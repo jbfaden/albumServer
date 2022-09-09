@@ -61,7 +61,7 @@ This shows either the list of albums, or the media within an album.
                     out.println( "<tr><td>\n"+image );
                     out.println( "</td><td>" );
                     if ( hidden ) {
-                        out.println("HIDDEN");
+                        out.println("&#10060;");
                     }
                     out.println( ""+label );
                     String [] notes= m.getNotes();
