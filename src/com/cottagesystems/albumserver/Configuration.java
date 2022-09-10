@@ -57,20 +57,20 @@ public class Configuration {
             }
             
             Properties prop= new Properties();
-            File configFile= new File( home + "config.properties" );
+            File configFile= new File( Configuration.home + "config.properties" );
             if ( !configFile.exists() ) {
                 if ( !configFile.getParentFile().exists() ) {
                     if ( !configFile.getParentFile().mkdir() ) {
                         throw new IllegalArgumentException("can't make the config directory");
                     }
                 }
-                FileWriter fw= new FileWriter(configFile);
-                fw.write("imageDatabaseRoot=/tmp/albumserver/imageDatabase/\n"
-                        + "cacheRoot=/tmp/albumServer/imageCache/\n"
-                        + "notesRoot=/tmp/albumServer/notes/\n"
-                        + "notesURL="
-                );
-                fw.close();
+                try (FileWriter fw = new FileWriter(configFile)) {
+                    fw.write("imageDatabaseRoot=/tmp/albumserver/imageDatabase/\n"
+                            + "cacheRoot=/tmp/albumServer/imageCache/\n"
+                            + "notesRoot=/tmp/albumServer/notes/\n"
+                            + "notesURL="
+                    );
+                }
             }
             prop.load( new InputStreamReader( new FileInputStream( configFile ) ) );
             imageDatabaseRoot = prop.getProperty("imageDatabaseRoot");
@@ -84,16 +84,16 @@ public class Configuration {
             }
             
             if ( !imageDatabaseRoot.startsWith("/") ) {
-                imageDatabaseRoot= home + imageDatabaseRoot;
+                imageDatabaseRoot= Configuration.home + imageDatabaseRoot;
             }
             
             if ( !cacheRoot.startsWith("/") ) {
-                cacheRoot = home + cacheRoot;
+                cacheRoot = Configuration.home + cacheRoot;
             }
             
             if ( !notesRoot.startsWith("http") ) {
                 if ( !notesRoot.startsWith("/") ) {
-                    notesRoot = home + notesRoot;
+                    notesRoot = Configuration.home + notesRoot;
                 }
             }
             
