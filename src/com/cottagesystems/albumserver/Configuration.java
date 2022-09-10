@@ -52,6 +52,10 @@ public class Configuration {
                 Configuration.home= home;
             }
             
+            if ( !Configuration.home.endsWith("/") ) {
+                throw new IllegalArgumentException("Configuration.home doesn't end in /.");
+            }
+            
             Properties prop= new Properties();
             File configFile= new File( home + "config.properties" );
             if ( !configFile.exists() ) {
