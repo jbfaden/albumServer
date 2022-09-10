@@ -42,13 +42,13 @@ public class Configuration {
         return imageDatabaseRoot==null;
     }
     
-    public static void load() throws FileNotFoundException {
+    public static void load( String home ) throws FileNotFoundException {
         try {
             
             if ( Configuration.home==null ) {
-                String home=null;
                 if ( home==null ) home= System.getProperty("ALBUM_SERVER_HOME");
                 if ( home==null ) home= "/tmp/albumserver/";
+                if ( !home.endsWith("/") ) home= home+"/";
                 Configuration.home= home;
             }
             

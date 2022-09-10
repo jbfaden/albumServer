@@ -22,7 +22,7 @@
     
     <%
     if ( Configuration.isNotLoaded() ) {
-        Configuration.load();
+        Configuration.load( request.getServletContext().getInitParameter("albumServerHome") ); 
     }
     %>
     

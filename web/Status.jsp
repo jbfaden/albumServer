@@ -17,7 +17,7 @@
     </head>
     <body>
         <%
-            Configuration.load();
+            Configuration.load( request.getServletContext().getInitParameter("albumServerHome") ); 
             File dbRoot = new File( Configuration.getImageDatabaseRoot() );
             File cacheFile= new File( Configuration.getCacheRoot() );
             File notesRoot= new File( Configuration.getNotesRoot() );
@@ -32,7 +32,7 @@
         <p>The server pulls its albums from the ImageDatabase.  Each album
             is a Unix folder containing png and other media files.<br>
             ImageDataBase: <%= Configuration.getImageDatabaseRoot() %>
-            <%= dbRoot.canRead() ? "(" + username + " can read)" : "<b>("+username + "cannot read)</b>" %></p>
+            <%= dbRoot.canRead() ? "(" + username + " can read)" : "<b>("+username + " cannot read)</b>" %></p>
 
         <p>The folder where notes are added to the server is called NotesRoot.  The server must
             be able to write to this location.<br>
