@@ -3,7 +3,7 @@
     <context-param>
         <description>The home directory of the albumServer, containing config.properties</description>
         <param-name>albumServerHome</param-name>
-        <param-value>/home/jbf/albumServer</param-value>
+        <param-value>/home/tomcat/albumServer</param-value>
     </context-param>
     <servlet>
         <servlet-name>PhotoServer</servlet-name>
