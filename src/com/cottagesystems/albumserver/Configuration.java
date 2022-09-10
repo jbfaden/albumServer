@@ -61,7 +61,7 @@ public class Configuration {
             if ( !configFile.exists() ) {
                 if ( !configFile.getParentFile().exists() ) {
                     if ( !configFile.getParentFile().mkdir() ) {
-                        throw new IllegalArgumentException("can't make the config directory");
+                        throw new IllegalArgumentException("can't make the config directory: " + configFile.getParentFile() );
                     }
                 }
                 try (FileWriter fw = new FileWriter(configFile)) {
