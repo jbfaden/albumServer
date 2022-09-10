@@ -260,22 +260,26 @@ public class Album {
             if ( !dir.isDirectory() ) continue;
             File faccess= new File( dir, "access.txt" );
             if ( faccess.exists() ) {
-                String username= accessBean.getUsername();
-                BufferedReader r;
-                try {
-                    r = new BufferedReader(new FileReader(faccess));
-                    String users= r.readLine();
-                    r.close();
-                    Pattern p= Pattern.compile("[0-9]+");
-                    if ( p.matcher(users).matches() && accessBean.hasRole( AccessBean.ROLE_AUTHOR ) ) {
-                        result.add( createFromDirectory( dir ) );
-                    } else if ( users.contains(username) ) {
-                        result.add( createFromDirectory( dir ) );
+                if ( !faccess.canRead() ) {
+                    logger.info("! unable to read access.txt !");
+                } else {
+                    String username= accessBean.getUsername();
+                    BufferedReader r;
+                    try {
+                        r = new BufferedReader(new FileReader(faccess));
+                        String users= r.readLine();
+                        r.close();
+                        Pattern p= Pattern.compile("[0-9]+");
+                        if ( p.matcher(users).matches() && accessBean.hasRole( AccessBean.ROLE_AUTHOR ) ) {
+                            result.add( createFromDirectory( dir ) );
+                        } else if ( users.contains(username) ) {
+                            result.add( createFromDirectory( dir ) );
+                        }
+                    } catch (FileNotFoundException ex) {
+                        throw new RuntimeException(ex);
+                    } catch ( IOException ex ) {
+                        throw new RuntimeException(ex);
                     }
-                } catch (FileNotFoundException ex) {
-                    throw new RuntimeException(ex);
-                } catch ( IOException ex ) {
-                    throw new RuntimeException(ex);
                 }
             } else {
                 result.add( createFromDirectory( dir ) );
