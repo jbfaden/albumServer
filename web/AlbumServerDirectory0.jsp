@@ -42,6 +42,8 @@ This shows either the list of albums, or the media within an album.
                 out.println( "albums</a>&gt;<b>"+album.getLabel());
                 out.println( "</b></td></tr>" );
 
+      	        out.println( "<tr><td colspan=2><a href=\"refresh.jsp?album="+album.getId()+"\">(refresh)</a>");
+
                 AccessBean access= (AccessBean)session.getAttribute("access" );
 
                 for ( Media m:list ) {
@@ -74,7 +76,6 @@ This shows either the list of albums, or the media within an album.
                     
                 }
 
-	        out.println( "<tr><td colspan=2><a href=\"refresh.jsp?album="+album.getId()+"\">(refresh)</a>");
 	        out.println( "<tr><td colspan=2><a href=\"SearchForm.jsp\" target=\"_top\">(search)</a>");
                 out.println( "<tr><td colspan=2><a href=\"AlbumServer0.jsp\" target=\"_top\">albums</a>><b>"+album.getLabel()+"</b></td></tr>" );
 
