@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStreamImpl;
 
 /**
  *
@@ -112,7 +114,7 @@ public class Negative extends Media {
                     image = ImageIO.read(new File(Configuration.getImageDatabaseRoot(), id));
                     final int w = image.getWidth();
                     final int h = image.getHeight();
-                    BufferedImage half = new BufferedImage(w / 2, h / 2, BufferedImage.TYPE_INT_ARGB);
+                    BufferedImage half = new BufferedImage(w / 2, h / 2, BufferedImage.TYPE_INT_RGB);
                     Graphics2D g = (Graphics2D) half.getGraphics();
                     g.drawImage(image.getScaledInstance(w / 2, h / 2, Image.SCALE_AREA_AVERAGING), null, null);
                     if ( !f.getParentFile().exists() ) {
