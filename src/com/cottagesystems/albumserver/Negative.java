@@ -26,6 +26,8 @@ import javax.imageio.ImageIO;
  */
 public class Negative extends Media {
     
+    private static final Logger logger= Logger.getLogger("albumServer");
+    
     public static final BufferedImage moment;
     static {
         moment= new BufferedImage( 400,300, BufferedImage.TYPE_INT_RGB );
@@ -48,7 +50,10 @@ public class Negative extends Media {
     }
 
 
-    /** Creates a new instance of Negative */
+    /** 
+     * Creates a new instance of Negative
+     * @param id the identifier like 20020121_kitties/P1210045.JPG
+     */
     public Negative( String id ) {
         super(id);
         capabilities.put( Capability.DOWNLOAD_MODIFIED.getClass(), Capability.DOWNLOAD_MODIFIED );
@@ -62,14 +67,17 @@ public class Negative extends Media {
         //capabilities.put( Capability.COPY_TO_CLIPBOARD.getClass(), Capability.COPY_TO_CLIPBOARD );
     }
     
+    @Override
     public String getIconURL( ) {
         return "<image src=\"PhotoServer?id="+id+"&icon=1&size=120\">";
     }
 
+    @Override
     public String getURL() {
         return "<input type='image' src=\"PhotoServer?id="+id+"&size=800\">";
     }
     
+    @Override
     public String getURL( String parms ) {
         return "<image src=\"PhotoServer?image="+id+"&"+parms+"\">";
         /*return "<applet archive='AlbumServerClient.jar' width=800 height=800 "
@@ -93,26 +101,31 @@ public class Negative extends Media {
         return image;
     }
 
+    @Override
     public Image getReducedImage() throws IOException {
         final File f= new File( Configuration.getCacheRoot(), "half/"+id );
         if ( !f.exists() ) {
-            Runnable run= new Runnable() {
-                public void run() {
-                    try {
-                        BufferedImage image = null;
-                        String format = Util.getExt(id);
-                        image = ImageIO.read(new File(Configuration.getImageDatabaseRoot(), id));
-                        final int w = image.getWidth();
-                        final int h = image.getHeight();
-                        BufferedImage half = new BufferedImage(w / 2, h / 2, BufferedImage.TYPE_INT_ARGB);
-                        Graphics2D g = (Graphics2D) half.getGraphics();
-                        g.drawImage(image.getScaledInstance(w / 2, h / 2, Image.SCALE_AREA_AVERAGING), null, null);
-                        f.getParentFile().mkdirs();
-                        ImageIO.write(half, format, f);
-                        image = half;
-                    } catch (IOException ex) {
-                        Logger.getLogger(Negative.class.getName()).log(Level.SEVERE, null, ex);
+            Runnable run= () -> {
+                try {
+                    BufferedImage image = null;
+                    String format = Util.getExt(id);
+                    image = ImageIO.read(new File(Configuration.getImageDatabaseRoot(), id));
+                    final int w = image.getWidth();
+                    final int h = image.getHeight();
+                    BufferedImage half = new BufferedImage(w / 2, h / 2, BufferedImage.TYPE_INT_ARGB);
+                    Graphics2D g = (Graphics2D) half.getGraphics();
+                    g.drawImage(image.getScaledInstance(w / 2, h / 2, Image.SCALE_AREA_AVERAGING), null, null);
+                    if ( !f.getParentFile().exists() ) {
+                        if ( !f.getParentFile().mkdirs() ) {
+                            logger.log(Level.WARNING, "unable to make home for reduced image: {0}", f);
+                        }
                     }
+                    if ( !ImageIO.write(half, format, f) ) {
+                        logger.log(Level.WARNING, "no appropriate writer found for format: {0}", format);
+                    }
+                    image = half;
+                } catch (IOException ex) {
+                    Logger.getLogger(Negative.class.getName()).log(Level.SEVERE, null, ex);
                 }
             };
             WorkQueue.getInstance().execute(run);

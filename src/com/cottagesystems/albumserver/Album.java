@@ -203,22 +203,9 @@ public class Album {
             Comparator c;
             if ( constantLength ) {
                 final int fcounterOffset= counterOffset;
-                c= new Comparator() {
-                    @Override
-                    public int compare(Object o1, Object o2) {
-                        //The album
-                        //http://sarahandjeremy.net:8080/albumServer/AlbumServer0.jsp?album=20080602_st_simons
-                        // showed that the dates get tweaked, misordering the images.
-                        return ((Media)o1).getId().substring(fcounterOffset).compareTo(((Media)o2).getId().substring(fcounterOffset));
-                    }
-                };
+                c= (Comparator) (Object o1, Object o2) -> ((Media)o1).getId().substring(fcounterOffset).compareTo(((Media)o2).getId().substring(fcounterOffset));
             } else {
-                c= new Comparator() {
-                    @Override
-                    public int compare(Object o1, Object o2) {
-                        return ((Media)o1).getTimeStamp().compareTo(((Media)o2).getTimeStamp());
-                    }
-                };
+                c= (Comparator) (Object o1, Object o2) -> ((Media)o1).getTimeStamp().compareTo(((Media)o2).getTimeStamp());
             }
             Collections.sort( negatives, c );
             isListed= true;
@@ -253,10 +240,12 @@ public class Album {
     public static List<Album> getAlbums( AccessBean accessBean ) {
         File f= new File( Configuration.getImageDatabaseRoot() );
         String[] list= f.list();
-        List<Album> result= new ArrayList<Album>();
-        for ( int i=0; i<list.length; i++ ) {
-            if ( list[i].equals("cache") ) continue;
-            File dir= new File( Configuration.getImageDatabaseRoot(), list[i] );
+        List<Album> result= new ArrayList<>();
+        for (String list1 : list) {
+            if (list1.equals("cache")) {
+                continue;
+            }
+            File dir = new File(Configuration.getImageDatabaseRoot(), list1);
             if ( !dir.isDirectory() ) continue;
             File faccess= new File( dir, "access.txt" );
             if ( faccess.exists() ) {
@@ -285,11 +274,7 @@ public class Album {
                 result.add( createFromDirectory( dir ) );
             }
         }
-        Collections.sort( result, new Comparator() {
-            public int compare(Object o1, Object o2) {
-                return -1*((Album)o1).getLabel().compareTo(((Album)o2).getLabel());
-            }
-        } );
+        Collections.sort(result, (Object o1, Object o2) -> -1*((Album)o1).getLabel().compareTo(((Album)o2).getLabel()));
         return result;
     }
 }
