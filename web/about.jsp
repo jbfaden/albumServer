@@ -14,6 +14,7 @@
     <body>
         <h1>Thanks to open-source:</h1><ul>
             <li>metadata extractor: https://github.com/drewnoakes/metadata-extractor</li>
+            <li>commonmark: https://github.com/commonmark/commonmark-java</li>
             <li>totem-video-thumbnailer</li>
         </ul>
         
