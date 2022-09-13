@@ -20,7 +20,7 @@
         <%
             String mime= MediaServer.mimeForExt(id);
             %>
-        <video width="640" height="480" controls poster="PhotoServer?id=<%=id%>" >
+        <video width="640" height="480" controls="controls" poster="PhotoServer?id=<%=id%>" >
             <source src="MediaServer?id=<%=id%>" type=<%=mime%> >
         </video>
         <br>Content Type: <%=mime%> (mp4 is good, other is bad.)
