@@ -19,7 +19,8 @@
         </ul>
         
         <h1>AlbumServer</h1>
-        <h3>20220911a</h3><ul>
+        <h3>20220913a</h3><ul>
+            <li>corrections to video tabs.
             <li>password file is kept in home now, and cache can always be deleted.
             <li>use GitLab to provide notes.
             <li>correction where ARGB was used to create JPG images, which isn't supported but was not caught by older Java instances.
