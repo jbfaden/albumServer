@@ -19,6 +19,10 @@
         </ul>
         
         <h1>AlbumServer</h1>
+        <h3>20220914a</h3></ul> 
+            <li>add search box for album name.  
+            <li>corrections to last release.
+        </ul>
         <h3>20220913a</h3><ul>
             <li>corrections to video tabs.
             <li>password file is kept in home now, and cache can always be deleted.
