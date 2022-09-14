@@ -1,3 +1,5 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.text.DateFormat"%>
 <%@page import="org.commonmark.renderer.html.HtmlRenderer"%>
 <%@page import="org.commonmark.node.Node"%>
 <%@page import="org.commonmark.parser.Parser"%>
@@ -219,7 +221,10 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
                 }
                                         
                 Date stamp= media.getTimeStamp( );
-                if ( stamp!=null ) { out.println( stamp.toString() ); }
+                if ( stamp!=null ) { 
+                    DateFormat df= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+                    out.println( df.format(stamp) ); 
+                }
 
                 out.println("<br>");
 

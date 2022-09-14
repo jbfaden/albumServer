@@ -17,15 +17,39 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
 This shows either the list of albums, or the media within an album.
 -->
 <html>
-    
     <body>
+    <script>
+function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("albumsTable");
+  a = div.getElementsByTagName("a");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+</script>
         
-        <table>
-            <%    
-            
+        <%
             String albumString= request.getParameter("album");
             if ( albumString.equals("") ) albumString=null;
-            
+
+            if ( albumString==null ) {
+                %>
+                <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+                <%
+            }
+        %>
+        
+        <table id="albumsTable">
+            <%    
+                        
             if ( albumString!=null ) { // show the media within an album.
                 
                 Album album;
@@ -76,7 +100,7 @@ This shows either the list of albums, or the media within an album.
                     
                 }
 
-	        out.println( "<tr><td colspan=2><a href=\"SearchForm.jsp\" target=\"_top\">(search)</a>");
+	        //out.println( "<tr><td colspan=2><a href=\"SearchForm.jsp\" target=\"_top\">(search)</a>");
                 out.println( "<tr><td colspan=2><a href=\"AlbumServer0.jsp\" target=\"_top\">albums</a>><b>"+album.getLabel()+"</b></td></tr>" );
 
             } else {
@@ -88,12 +112,12 @@ This shows either the list of albums, or the media within an album.
 
                     List<Album> albums= Album.getAlbums( (AccessBean)session.getAttribute("access" ) );
 
-                    out.println( "<tr><td colspan=2><a href=\"SearchForm.jsp\" target=\"_top\">(search)</a>");
+                    //out.println( "<tr><td colspan=2><a href=\"SearchForm.jsp\" target=\"_top\">(search)</a>");
                     for ( Album a:albums ) {
                         String link= "<a href=\"AlbumServer0.jsp?album="+a.getId()+"\" target=\"_top\">"+a.getLabel()+"</a>";
                         out.println( "<tr><td>"+link+"</td></tr>");
                     }
-                    out.println( "<tr><td colspan=2><a href=\"SearchForm.jsp\" target=\"_top\">(search)</a>");
+                    //out.println( "<tr><td colspan=2><a href=\"SearchForm.jsp\" target=\"_top\">(search)</a>");
                }
                 
             }
