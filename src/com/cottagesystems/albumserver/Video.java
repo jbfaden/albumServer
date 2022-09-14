@@ -52,7 +52,7 @@ public class Video extends Media {
 
     @Override
     public String getURL() { 
-        return "<a href='videoPlayer.jsp?id="+id+"'><img src=\"PhotoServer?id=" + id + "\"></a>";
+        return "<img src=\"PhotoServer?id=" + id + "\">";
     }
 
 //    private class StreamGobbler extends Thread {
@@ -129,7 +129,7 @@ public class Video extends Media {
             doDecorate = true; // totem-video-thumbnailer decorates.
         } else {
             f= thumb;
-            doDecorate = false; // assume thumb has decorations.
+            doDecorate = true; // assume thumb has decorations.
             
         }
 
@@ -152,6 +152,9 @@ public class Video extends Media {
             int step= image.getWidth()*7/150;
             for (int i = 0; i < image.getHeight(); i += step-1) {
                 g.fill( new RoundRectangle2D.Double( 5, i+5, step-10, step-10, 3, 3 ) );
+            }
+            for (int i = 0; i < image.getHeight(); i += step-1) {
+                g.fill( new RoundRectangle2D.Double( image.getWidth()-5-step+10, i+5, step-10, step-10, 3, 3 ) );
             }
         }
         return image;
