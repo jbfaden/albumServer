@@ -9,13 +9,26 @@
 
 package com.cottagesystems.albumserver;
 
+import com.drew.imaging.jpeg.JpegMetadataReader;
+import com.drew.imaging.jpeg.JpegProcessingException;
+import com.drew.metadata.Directory;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.Tag;
+import com.drew.metadata.exif.ExifIFD0Directory;
+import com.drew.metadata.exif.ExifSubIFDDirectory;
+import com.drew.metadata.exif.GpsDirectory;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -101,6 +114,69 @@ public class Negative extends Media {
         return image;
     }
 
+    /**
+     * read useful JPG metadata, such as the Orientation.  This also looks to see if GPS
+     * metadata is available.
+     * @param f the JPG file
+     * @return
+     * @throws IOException 
+     */    
+    public static Map<String, Object> getJpegExifMetaData( File f ) throws IOException {
+        try ( InputStream ins= new FileInputStream(f) ) {
+            return getJpegExifMetaData(ins);
+        }
+    }
+    
+    /**
+     * read useful JPG metadata, such as the Orientation.  This also looks to see if GPS
+     * metadata is available.
+     * @param in inputStream from a jpeg source.
+     * @return
+     * @throws IOException 
+     */
+    public static Map<String, Object> getJpegExifMetaData(InputStream in) throws IOException {
+        Metadata metadata;
+        
+        try {
+            metadata = JpegMetadataReader.readMetadata(in);
+        } catch ( JpegProcessingException ex ) {
+            throw new IllegalArgumentException("Error in JPG");
+        }
+        
+        Map<String, Object> map = new LinkedHashMap<>();
+
+        Directory exifDirectory;
+
+        Collection<ExifSubIFDDirectory> dds= metadata.getDirectoriesOfType(ExifSubIFDDirectory.class);
+        if ( dds!=null ) {
+            for ( ExifSubIFDDirectory ds: dds ) {
+                for ( Tag t : ds.getTags() ) {
+                    map.put(t.getTagName(), t.getDescription());
+                }
+            }
+        }
+
+        Collection<ExifIFD0Directory> dds2= metadata.getDirectoriesOfType(ExifIFD0Directory.class);
+        if ( dds2!=null ) {
+            for ( ExifIFD0Directory ds2 : dds2 ) {
+                for (Tag t : ds2.getTags()) {
+                    map.put(t.getTagName(), t.getDescription());
+                }
+            }
+        }
+
+        Collection<GpsDirectory> dds3 = metadata.getDirectoriesOfType(GpsDirectory.class);
+        if ( dds2!=null ) {
+            for ( GpsDirectory ds3: dds3 ) {
+                for (Tag t : ds3.getTags()) {
+                    map.put(t.getTagName(), t.getDescription());
+                }
+            }
+        }
+
+        return map;
+    }
+    
     @Override
     public Image getReducedImage() throws IOException {
         final File f= new File( Configuration.getCacheRoot(), "half/"+id );
