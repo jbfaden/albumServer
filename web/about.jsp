@@ -19,6 +19,9 @@
         </ul>
         
         <h1>AlbumServer</h1>
+        <h3>20220915a</h3></ul> 
+            <li>corrections to exif handling.
+        </ul>
         <h3>20220914a</h3></ul> 
             <li>add search box for album name.  
             <li>corrections to last release.
