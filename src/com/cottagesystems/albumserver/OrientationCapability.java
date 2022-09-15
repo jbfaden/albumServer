@@ -7,23 +7,16 @@ package com.cottagesystems.albumserver;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
-import com.drew.imaging.jpeg.JpegMetadataReader;
 import com.drew.imaging.jpeg.JpegProcessingException;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.MetadataException;
-import com.drew.metadata.Tag;
 import com.drew.metadata.exif.ExifDirectoryBase;
-import com.drew.metadata.exif.ExifIFD0Directory;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
-import com.drew.metadata.exif.GpsDirectory;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,6 +27,7 @@ import java.util.logging.Logger;
  */
 public class OrientationCapability implements Capability {
 
+    @Override
     public String getHtmlPresentor(Media media, AccessBean access) {
         String s= load(media);
         if ( s==null ) return "Exif N/A";
@@ -81,7 +75,7 @@ public class OrientationCapability implements Capability {
                         }
                     }
                 }
-            } catch (Exception ex) {
+            } catch (IOException ex) {
                 Logger.getLogger(OrientationCapability.class.getName()).log(Level.SEVERE, null, ex);
             }
             Collection<ExifSubIFDDirectory> ss= metadata.getDirectoriesOfType( ExifSubIFDDirectory.class) ;
@@ -123,18 +117,11 @@ public class OrientationCapability implements Capability {
             } else {
                 return null;
             }
-        } catch ( MetadataException ex ) {
-            Logger.getLogger(OrientationCapability.class.getName()).log(Level.SEVERE, null, ex);
-        } catch ( IOException ex ) {
-            Logger.getLogger(OrientationCapability.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JpegProcessingException ex) {
-            Logger.getLogger(OrientationCapability.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ImageProcessingException ex) {
+        } catch ( MetadataException | IOException | ImageProcessingException ex ) {
             Logger.getLogger(OrientationCapability.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
         }
         return null;
-        //return null;
     }
 
 

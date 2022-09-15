@@ -20,8 +20,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -239,6 +237,8 @@ public class Media {
     
     /** 
      * return a full resolution image of the media item
+     * @return 
+     * @throws java.io.IOException
      */
     public Image getImage() throws IOException {
         return getImageIcon();
@@ -246,18 +246,22 @@ public class Media {
 
     /**
      * return a half-reduce image of the media item, or null if none exists.
+     * @return 
+     * @throws java.io.IOException 
      */
     public Image getReducedImage() throws IOException {
         return null;
     }
 
     
+    @Override
     public int hashCode() {
         return id.hashCode();
     }
     
     /**
      * return a method for getting the raw media item
+     * @return 
      */
     public String getURL() {
         //return "<button id='downloadButton' onclick=\"document.location='MediaServer?id="+id+" ' \">download<button>";
@@ -272,8 +276,16 @@ public class Media {
     
     /**
      * returns a capability object or null if the capability doesn't exist.
+     * @param capability
+     * @param access
+     * @return 
      */
     public Capability getCapability( Class capability, AccessBean access ) {
         return (Capability)capabilities.get( capability );
+    }
+    
+    @Override
+    public String toString() {
+        return "media " + this.id;
     }
 }
