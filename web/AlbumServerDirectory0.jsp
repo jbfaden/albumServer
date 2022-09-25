@@ -1,3 +1,4 @@
+<%@page import="java.io.FileFilter"%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@page import="com.cottagesystems.albumserver.*, java.util.*, java.io.File" %>
@@ -98,6 +99,14 @@ function filterFunction() {
                     }
                     out.println( "</td></tr>\n");
                     
+                }
+                
+                if ( list.size()==0 ) { // whoops, it's actually a Box, which contains other albums.
+                    List<Album> albums= Album.getAlbums( new Box( album.getId() ), (AccessBean)session.getAttribute("access" ) );                    
+                    for ( Album a:albums ) {
+                        String link= "<a href=\"AlbumServer0.jsp?album="+a.getId()+"\" target=\"_top\">"+a.getLabel()+"</a>";
+                        out.println( "<tr><td>"+link+"</td></tr>");
+                    }
                 }
 
 	        //out.println( "<tr><td colspan=2><a href=\"SearchForm.jsp\" target=\"_top\">(search)</a>");
