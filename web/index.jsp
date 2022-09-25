@@ -15,11 +15,18 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Album Server</title>
     </head>
     <body>
-
-    <a href="AlbumServer0.jsp">album server</a>
-    
+        <h1>Album Server</h1>
+        The Album Server is a tool for managing family photos.  Images, Videos,
+        Sounds and other content is stored in Albums, which correspond to 
+        directories on the server.  Simple security is allowed, but most
+        albums are public by default.
+        <br>
+        <hr>
+    <a href="AlbumServer0.jsp">open album server</a>
+    <hr>
+    <small>Version 20220925a</small>
     </body>
 </html>

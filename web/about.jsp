@@ -19,6 +19,9 @@
         </ul>
         
         <h1>AlbumServer</h1>
+        <h3>20220925a</h3></ul> 
+            <li>introduce box, a special album which can contain other albums.
+        </ul>
         <h3>20220915a</h3></ul> 
             <li>corrections to exif handling.
         </ul>
