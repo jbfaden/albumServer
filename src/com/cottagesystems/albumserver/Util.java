@@ -4,6 +4,7 @@
  */
 package com.cottagesystems.albumserver;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -34,5 +35,25 @@ public class Util {
     public static String getExt( String name ) {
         int i= name.lastIndexOf(".");
         return name.substring(i+1);
+    }
+    
+    /**
+     * return a name for the album in a directory.  If the directory is under the imageDatabaseRoot, then
+     * it may contain slashes.
+     * @param dir
+     * @return 
+     */
+    public static String nameForAlbum( File dir ) {
+        String sdir= dir.toString();
+        if ( sdir.startsWith( Configuration.getImageDatabaseRoot() ) ) {
+            String name = sdir.substring(Configuration.getImageDatabaseRoot().length());
+            if ( name.contains("..") ) {
+                throw new IllegalArgumentException("illegal name contains ..");
+            }
+            return name;
+        } else {
+            return dir.getName();
+        }
+        
     }
 }

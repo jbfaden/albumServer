@@ -219,11 +219,13 @@ public class Album {
     }
     
     public static Album createFromDirectory( File dir ) {
-        Album result= albums.get(dir.getName());
+        String name = Util.nameForAlbum(dir);
+        Album result= albums.get(name);
+        result= null;
         if ( result==null ) {
-            result= new Album(dir.getName());
+            result= new Album( name );
             result.isListed= false;
-            result.folderName= dir.getName();
+            result.folderName= name;
         }
         return result;
     }
@@ -237,15 +239,26 @@ public class Album {
 	return albums.get(id);
     }
     
-    public static List<Album> getAlbums( AccessBean accessBean ) {
-        File f= new File( Configuration.getImageDatabaseRoot() );
+    /**
+     * return the albums within the box.
+     * @param box
+     * @param accessBean
+     * @return 
+     */
+    public static List<Album> getAlbums( Box box, AccessBean accessBean ) {
+        File f;
+        if ( box==Box.ROOT ) {
+            f = new File( Configuration.getImageDatabaseRoot() );
+        } else {
+            f = new File( Configuration.getImageDatabaseRoot(), box.folderName );
+        }
         String[] list= f.list();
         List<Album> result= new ArrayList<>();
         for (String list1 : list) {
             if (list1.equals("cache")) {
                 continue;
             }
-            File dir = new File(Configuration.getImageDatabaseRoot(), list1);
+            File dir = new File( f, list1);
             if ( !dir.isDirectory() ) continue;
             File faccess= new File( dir, "access.txt" );
             if ( faccess.exists() ) {
@@ -276,5 +289,14 @@ public class Album {
         }
         Collections.sort(result, (Object o1, Object o2) -> -1*((Album)o1).getLabel().compareTo(((Album)o2).getLabel()));
         return result;
+    }
+    
+    /**
+     * return the top-level group of albums
+     * @param accessBean
+     * @return 
+     */
+    public static List<Album> getAlbums( AccessBean accessBean ) {
+        return getAlbums( Box.ROOT, accessBean );
     }
 }
