@@ -1,17 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.cottagesystems.albumserver;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
 import com.drew.lang.GeoLocation;
-import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
-import com.drew.metadata.exif.ExifDirectoryBase;
-import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.drew.metadata.exif.GpsDirectory;
 import java.io.File;
 import java.io.IOException;
@@ -28,10 +21,9 @@ public class LocationCapability implements Capability {
     public String getHtmlPresentor(Media media, AccessBean access) {
         String s= load(media);
         if ( s==null ) {
-            return "Location=?";
+            return "";
         } else {
             //<a href="https://www.google.com/maps/@41.6611055,-91.5111817,15z">s</a>
-                    
             return s;
         }
     }
