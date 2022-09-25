@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
  * presented in HTML on the left as a list of thumbnails.
  * @author jbf
  */
-public class Album {
+public class Album extends Media {
     
     private final static Logger logger= Logger.getLogger("albumServer");
     
@@ -45,6 +45,7 @@ public class Album {
     String id;
     
     public Album( String id ) {
+        super(id);
         negatives= new ArrayList<>();
         this.id= id;
         this.folderName= id;
@@ -166,10 +167,19 @@ public class Album {
             Pattern p= Pattern.compile("(\\d+).*");
             // album/IMG_0383.JPG album/IMG_0384.MOV album/IMG_0385.JPG 
             for (String list1 : list) {
-                String lid = new File(f, list1).toString().substring(Configuration.getImageDatabaseRoot().length());
+                File f1=new File(f, list1);
+                String lid = f1.toString().substring(Configuration.getImageDatabaseRoot().length());
                 
                 lid= lid.replaceAll("\\\\", "/" );
-                Media m=  Media.createMedia( lid );
+                
+                Media m;
+                if ( f1.isDirectory() ) {
+                    //m= Album.createFromDirectory(f1);
+                    m= null;
+                } else {
+                    m= Media.createMedia( lid );
+                }
+                
                 int ifileName= lid.indexOf("/")+1;
                 if ( m!=null ) { // for example, IMG_0532.JPG.txt returns null...
                     this.add( m );
@@ -212,7 +222,23 @@ public class Album {
         }
         return negatives;
     }
+    
+    /**
+     * return the HTML for a small icon, e.g. a call to the PhotoServer
+     * with the id and size=120.
+     * 
+     * @return the HTML for a small icon.
+     */
+    public String getIconURL() {
+        return "<image src='userInterface/albumIcon.png' width='60'>";
+    }
 
+    @Override
+    public String getURL() {
+        return "http://localhost:8080/albumServer/AlbumServer0.jsp?album="+this.id;
+    }
+
+    
     public synchronized void refresh() {
         this.negatives.removeAll(this.negatives);
         this.isListed= false;
