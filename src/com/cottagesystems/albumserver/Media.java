@@ -61,20 +61,22 @@ public class Media {
         int iext= id.lastIndexOf('.')+1;
         String ext= id.substring( iext );
         
-        if ( ext.equalsIgnoreCase("jpg" ) ) {
-            return new Negative( id );
-        } else if ( ext.equalsIgnoreCase("png") ) {
-            return new Negative( id );
-        } else if ( ext.equalsIgnoreCase("mpg" ) ) {
-            return new Video( id );
-        } else if ( ext.equalsIgnoreCase("mp4" ) ) {
-            return new Video( id );
-        } else if ( ext.equalsIgnoreCase("avi" ) ) {
-            return new Video(id);
-        } else if ( ext.equalsIgnoreCase("wav") ) {
-            return new Media(id);
-        } else {
-            return null;
+        ext= ext.toLowerCase();
+        switch (ext) {
+            case "jpg":
+                return new Negative( id );
+            case "png":
+                return new Negative( id );
+            case "mpg":
+                return new Video( id );
+            case "mp4":
+                return new Video( id );
+            case "avi":
+                return new Video(id);
+            case "wav":
+                return new Media(id);
+            default:
+                return null;
         }
     }
     
