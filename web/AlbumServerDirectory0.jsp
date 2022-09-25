@@ -64,10 +64,22 @@ function filterFunction() {
                 List<Media> list= album.getContents();
                 
                 out.println( "<tr><td colspan=2><a href=\"AlbumServer0.jsp\" target=\"_top\">");
-                out.println( "albums</a>&gt;<b>"+album.getLabel());
+                out.println( "albums</a>&gt;<b>");
+                if ( album.getId().contains("/") ) {
+                    String[] ss= album.getId().split("\\/");
+                    String accum="";
+                    for ( int i=0; i<ss.length-1; i++ ) {
+                        out.print("<a href=\"refresh.jsp?album="+accum + "/"+ ss[i]+"\">");
+                        out.print(ss[i]);
+                        out.print("</a>/");
+                    }
+                    out.println(ss[ss.length-1]);
+                } else {
+                    out.println(album.getLabel());
+                }
                 out.println( "</b></td></tr>" );
 
-      	        out.println( "<tr><td colspan=2><a href=\"refresh.jsp?album="+album.getId()+"\">(refresh)</a>");
+                out.println( "<tr><td colspan=2><a href=\"refresh.jsp?album="+album.getId()+"\">(refresh)</a>");
 
                 AccessBean access= (AccessBean)session.getAttribute("access" );
 
