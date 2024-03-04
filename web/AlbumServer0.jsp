@@ -1,3 +1,4 @@
+<%@page import="java.util.logging.Logger"%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@page import="com.cottagesystems.albumserver.*, java.io.*" %>
@@ -22,7 +23,10 @@
     
     <%
     if ( Configuration.isNotLoaded() ) {
-        Configuration.load( request.getServletContext().getInitParameter("albumServerHome") ); 
+        Logger.getLogger("albumServer").info("Configuration.load using initParameter albumServerHome");
+        String home=request.getServletContext().getInitParameter("albumServerHome");
+        Configuration.load( home ); 
+        out.println("configuration loaded...  "+home);
     }
     %>
     
@@ -54,7 +58,7 @@
         </frameSet>
         <frame src="AlbumServerContent0.jsp?album=<%=album%>&id=<%=id%>" name="content" >
     </frameset><noframes></noframes><body>
-        
+    
     </body></noframes>
     <%
           AccessBean access=(AccessBean) session.getAttribute("access");

@@ -19,6 +19,9 @@
         </ul>
         
         <h1>AlbumServer</h1>
+        <h3>20240228.1</h3></ul> 
+            <li>Don't throw runtime when credentials info file isn't found, it's better to work somewhat and introduce errors to future me.
+        </ul>
         <h3>20220925a</h3></ul> 
             <li>introduce box, a special album which can contain other albums.
         </ul>

@@ -1,3 +1,4 @@
+<%@page import="com.cottagesystems.albumserver.Configuration"%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%--
@@ -27,6 +28,6 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
         <hr>
     <a href="AlbumServer0.jsp">open album server</a>
     <hr>
-    <small>Version 20220925a</small>
+    <small>Version 20240304.1</small>
     </body>
 </html>

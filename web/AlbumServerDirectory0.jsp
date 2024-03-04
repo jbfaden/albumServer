@@ -127,7 +127,8 @@ function filterFunction() {
             } else {
                 
                 if ( !( new File( Configuration.getImageDatabaseRoot() ).exists() ) ) {
-                    out.println("albums database doesn't exist!<br>Expected to find folders containing images at<br>"+Configuration.getImageDatabaseRoot() );
+                    out.println("<br>albums database doesn't exist!<br>Expected to find folders containing images at<br>"+Configuration.getImageDatabaseRoot()+"<br>"
+                            + "Webmaster, please see configuration at<br>" + Configuration.getHome() + "config.properties ." );
 
                 } else {
 
