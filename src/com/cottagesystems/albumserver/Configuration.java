@@ -65,9 +65,9 @@ public class Configuration {
                     }
                 }
                 try (FileWriter fw = new FileWriter(configFile)) {
-                    fw.write("imageDatabaseRoot=/tmp/albumserver/imageDatabase/\n"
-                            + "cacheRoot=/tmp/albumServer/imageCache/\n"
-                            + "notesRoot=/tmp/albumServer/notes/\n"
+                    fw.write("imageDatabaseRoot=imageDatabase/\n"
+                            + "cacheRoot=imageCache/\n"
+                            + "notesRoot=notes/\n"
                             + "notesURL="
                     );
                 }
@@ -77,7 +77,7 @@ public class Configuration {
             cacheRoot = prop.getProperty("cacheRoot");
             notesRoot = prop.getProperty("notesRoot");
             String notesURLString = prop.getProperty("notesURL",null);
-            if ( notesURLString==null ) {
+            if ( notesURLString==null || notesURLString.length()==0 ) {
                 notesURL = null;
             } else {
                 notesURL = new URL( notesURLString );
@@ -184,8 +184,9 @@ public class Configuration {
     }
     
     /**
-     * the location of a writeable folder that is backed up.  
-     * Arbitrary text is put here.
+     * the location of a writable folder that is backed up.  
+     * Arbitrary text is put here.  This might be a clone of a GitLab
+     * repository.
      * @return
      */
     public static String getNotesRoot() {
@@ -193,7 +194,7 @@ public class Configuration {
     }
     
     /**
-     * null or the location of a remote store of notes, like a Gitlabs server.
+     * null or the location of a remote store of notes, like a Gitlab server.
      * @return 
      */
     public static URL getNotesURL() {

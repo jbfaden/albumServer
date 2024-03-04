@@ -19,7 +19,7 @@ public class GitCapability implements Capability {
             String notesFile= Configuration.getNotesRoot() + media.getId() + ".md";
             if ( new File(notesFile).exists() ) {
                 String metaFileStr= Configuration.getNotesURL().toString() + media.getId() + ".md";
-                return "<a href=\"" + metaFileStr + "\" target='_blank'>gitlabs</a>";
+                return "<a href=\"" + metaFileStr + "\" target='_blank'>GitLab</a>";
             } else {
                 return "notes";                
             }

@@ -69,6 +69,8 @@ public class Media {
             return new Video( id );
         } else if ( ext.equalsIgnoreCase("mp4" ) ) {
             return new Video( id );
+        } else if ( ext.equalsIgnoreCase("mov" ) ) {
+            return new Video( id );            
         } else if ( ext.equalsIgnoreCase("avi" ) ) {
             return new Video(id);
         } else if ( ext.equalsIgnoreCase("wav") ) {
