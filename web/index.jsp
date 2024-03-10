@@ -34,6 +34,6 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
         <hr>
     <a href="AlbumServer0.jsp">open album server</a>
     <hr>
-    <small>Version 20240304.1</small>
+    <small>Version 20240309.1</small>
     </body>
 </html>

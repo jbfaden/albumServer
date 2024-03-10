@@ -30,7 +30,9 @@ import javax.imageio.ImageIO;
  * @author jbf
  */
 public class Video extends Media {
-
+    
+    private static final Logger logger= Logger.getLogger("albumServer");
+    
     public Video(String id) {
         super(id);
         File mp4 = new File(Configuration.getImageDatabaseRoot(), id.replaceAll("AVI", "mp4"));
@@ -104,7 +106,7 @@ public class Video extends Media {
                 //Runtime.getRuntime().exec("ffmpeg -i " + video + " " + thumb);
                 //String s= "ffmpeg -i " + video + " " + thumb;
                 String s= "/usr/bin/totem-video-thumbnailer -s 640 " + video + " " + thumb;
-                System.err.println(s);
+                logger.fine(s);
                 ProcessBuilder pb= new ProcessBuilder(s.split("\\s") );
                 pb.environment().put( "DISPLAY", "localhost:2" );
                 Process p= pb.start();

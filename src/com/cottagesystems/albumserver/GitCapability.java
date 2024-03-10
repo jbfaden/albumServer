@@ -14,7 +14,7 @@ public class GitCapability implements Capability {
     public String getHtmlPresentor(Media media, AccessBean access) {
         URL s= Configuration.getNotesURL();
         if ( s==null ) {
-            return null;
+            return "<span title=\"Gitlab is not configured\">Gitlab</span>";
         } else {
             String notesFile= Configuration.getNotesRoot() + media.getId() + ".md";
             if ( new File(notesFile).exists() ) {
