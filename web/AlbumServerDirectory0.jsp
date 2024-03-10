@@ -18,6 +18,10 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
 This shows either the list of albums, or the media within an album.
 -->
 <html>
+    <head>
+        <!-- <meta http-equiv="refresh" content="5" /> -->
+    </head>
+        
     <body>
     <script>
 function filterFunction() {
@@ -46,7 +50,9 @@ function filterFunction() {
                 <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
                 <%
             }
+            boolean reload= false;
         %>
+        
         
         <table id="albumsTable">
             <%    
@@ -85,6 +91,11 @@ function filterFunction() {
 
                 for ( Media m:list ) {
                     String image= m.getIconURL();
+                    if ( image.contains("src=\"PhotoServer?id=") ) {
+                        if ( m.getReducedImage()==Negative.moment ) {
+                            reload= true;
+                        }
+                    }
                     HideCapability hideCapability= (HideCapability) m.getCapability( Capability.HIDE.getClass(), access );
                     boolean hidden= false;
                     if ( hideCapability!=null ) {
@@ -122,7 +133,7 @@ function filterFunction() {
                 }
 
 	        //out.println( "<tr><td colspan=2><a href=\"SearchForm.jsp\" target=\"_top\">(search)</a>");
-                out.println( "<tr><td colspan=2><a href=\"AlbumServer0.jsp\" target=\"_top\">albums</a>><b>"+album.getLabel()+"</b></td></tr>" );
+                out.println( "<tr><td colspan=2><a href=\"AlbumServer0.jsp\" target=\"_top\">albums</a>><b>"+album.getLabel()+"</b></td></tr>\n" );
 
             } else {
                 
@@ -146,6 +157,17 @@ function filterFunction() {
             
             %>
         </table>
+
+        <%
+            if ( reload ) {
+                %>
+                    <script language="javascript">
+                        setTimeout(function () { location.reload(1); }, 2000);
+                    </script>
+                <%
+            }
+        %>
+
     </body>
     
 </html>

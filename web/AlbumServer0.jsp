@@ -27,6 +27,7 @@
         String home=request.getServletContext().getInitParameter("albumServerHome");
         Configuration.load( home ); 
         out.println("configuration loaded...  "+home);
+        response.sendRedirect( request.getContextPath() );
     }
     %>
     
