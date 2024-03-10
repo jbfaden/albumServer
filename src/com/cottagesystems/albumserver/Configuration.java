@@ -33,6 +33,7 @@ public class Configuration {
     private static String cacheRoot = null;
     private static String notesRoot = null;
     private static URL notesURL = null;
+    private static String videoThumbnailer = null;
             
     /**
      * return true if the configuration has not been loaded.
@@ -65,11 +66,20 @@ public class Configuration {
                     }
                 }
                 try (FileWriter fw = new FileWriter(configFile)) {
-                    fw.write("imageDatabaseRoot=imageDatabase/\n"
-                            + "cacheRoot=imageCache/\n"
-                            + "notesRoot=notes/\n"
-                            + "notesURL="
-                    );
+                    fw.write("# directory relative to this configuration\n");
+                    fw.write("imageDatabaseRoot=imageDatabase/\n");
+                    fw.write("\n");
+                    fw.write("# location of directory where server can generate thumbnails and reduced resolution images.\n");
+                    fw.write("cacheRoot=imageCache/\n");
+                    fw.write("\n");
+                    fw.write("# location of directory where server can find annotations to images.  This might be a clone of a Gitlab server.\n");
+                    fw.write("notesRoot=notes/\n");
+                    fw.write("\n");
+                    fw.write("# location of Gitlab server project root where annotations can be editted.\n");
+                    fw.write("notesURL=\n");
+                    fw.write("\n");
+                    fw.write("# command to run to generate thumbnails of videos. \" <video> <thumb>\" is appended to the line and it is executed.\n");
+                    fw.write("videoThumbnailer=/usr/bin/totem-video-thumbnailer -s 640\n");
                 }
             }
             prop.load( new InputStreamReader( new FileInputStream( configFile ) ) );
@@ -108,6 +118,8 @@ public class Configuration {
             if ( !cacheRoot.endsWith("/") ) {
                 cacheRoot= cacheRoot + "/";
             }
+            
+            videoThumbnailer= prop.getProperty("videoThumbnailer");
             
         } catch (IOException ex) {
             if ( ex instanceof FileNotFoundException ) {
@@ -199,6 +211,14 @@ public class Configuration {
      */
     public static URL getNotesURL() {
         return notesURL;
+    }
+    
+    /**
+     * command to run to create a thumbnail from a video
+     * @return 
+     */
+    public static String getVideoThumbnailer() {
+        return videoThumbnailer;
     }
         
 }
