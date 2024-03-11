@@ -90,6 +90,9 @@ public class Configuration {
             if ( notesURLString==null || notesURLString.length()==0 ) {
                 notesURL = null;
             } else {
+                if ( !notesURLString.endsWith("/") ) {
+                    notesURLString= notesURLString+"/";
+                }
                 notesURL = new URL( notesURLString );
             }
             

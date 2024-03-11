@@ -21,7 +21,7 @@ public class GitCapability implements Capability {
                 String metaFileStr= Configuration.getNotesURL().toString() + media.getId() + ".md";
                 return "<a href=\"" + metaFileStr + "\" target='_blank'>GitLab</a>";
             } else {
-                return "notes";                
+                return "<span title=\"no notes found\">notes</span>";                
             }
             
         }
