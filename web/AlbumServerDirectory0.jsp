@@ -51,6 +51,7 @@ function filterFunction() {
                 <%
             }
             boolean reload= false;
+            boolean first20reload= false;
         %>
         
         
@@ -89,11 +90,15 @@ function filterFunction() {
 
                 AccessBean access= (AccessBean)session.getAttribute("access" );
 
+                int i=0;
                 for ( Media m:list ) {
                     String image= m.getIconURL();
                     if ( image.contains("src=\"PhotoServer?id=") ) {
                         if ( m.getReducedImage()==Negative.moment ) {
                             reload= true;
+                            if ( i<20 ) {
+                                first20reload= true;
+                            }
                         }
                     }
                     HideCapability hideCapability= (HideCapability) m.getCapability( Capability.HIDE.getClass(), access );
@@ -121,7 +126,7 @@ function filterFunction() {
                         out.println("\n<br><small>"+shor+"</small>");
                     }
                     out.println( "</td></tr>\n");
-                    
+                    i=i+1;
                 }
                 
                 if ( list.size()==0 ) { // whoops, it's actually a Box, which contains other albums.
@@ -160,9 +165,10 @@ function filterFunction() {
 
         <%
             if ( reload ) {
+                int milliseconds= first20reload ? 2000 : 10000;
                 %>
                     <script language="javascript">
-                        setTimeout(function () { location.reload(1); }, 2000);
+                        setTimeout(function () { location.reload(1); }, <%=milliseconds%>);
                     </script>
                 <%
             }
