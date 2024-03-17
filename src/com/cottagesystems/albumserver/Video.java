@@ -10,6 +10,7 @@ package com.cottagesystems.albumserver;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.RoundRectangle2D;
@@ -79,6 +80,45 @@ public class Video extends Media {
 //        }
 //    }
     
+    
+    public static final BufferedImage noVideoThumbnailer;
+    static {
+        noVideoThumbnailer= new BufferedImage( 400,300, BufferedImage.TYPE_INT_RGB );
+        for ( int i=0; i<400; i++ ) {
+            for ( int j=0; j<300; j++ ) {
+                int g= (int)( Math.random() * 100 + 100 );
+                noVideoThumbnailer.setRGB( i, j, g*256*256 + g*256 + g );
+            }
+        }
+        Graphics2D g= (Graphics2D) noVideoThumbnailer.getGraphics();
+        g.setFont( Font.decode("sans-30") );
+        g.setColor( Color.WHITE );
+        g.drawString( "No Video Thumbnailer", 23, 100 );
+        g.setColor( Color.DARK_GRAY );
+        g.drawString( "No Video Thumbnailer", 25, 103 );
+        g.setColor( Color.WHITE );
+        g.drawString( "(image not available)", 23, 156 );
+        g.setColor( Color.DARK_GRAY );
+        g.drawString( "(image not available)", 25, 159 );
+
+        int h= noVideoThumbnailer.getHeight();
+        int w= noVideoThumbnailer.getWidth();
+        
+        g.setColor(Color.DARK_GRAY);
+        g.fillRect(0,0,18,h);
+        g.fillRect(w-18,0,18,h);
+        g.setColor(Color.WHITE);
+        g.setStroke(new BasicStroke(2.0f));
+        int step= noVideoThumbnailer.getWidth()*7/150;
+        for (int i = 0; i < h; i += step-1) {
+            g.fill( new RoundRectangle2D.Double( 5, i+5, step-10, step-10, 3, 3 ) );
+        }
+        for (int i = 0; i < h; i += step-1) {
+            g.fill( new RoundRectangle2D.Double( w-5-step+10, i+5, step-10, step-10, 3, 3 ) );
+        }
+                
+    }
+    
     @Override
     public Image getImageIcon() throws IOException {
         
@@ -105,7 +145,9 @@ public class Video extends Media {
                 //System.err.println("ffmpeg -i " + video + " " + thumb);
                 //Runtime.getRuntime().exec("ffmpeg -i " + video + " " + thumb);
                 //String s= "ffmpeg -i " + video + " " + thumb;
-                
+                if ( Configuration.getVideoThumbnailer()==null ) {
+                    return noVideoThumbnailer;
+                }
                 String s= Configuration.getVideoThumbnailer() + " " + video + " " + thumb;
                 logger.fine(s);
                 ProcessBuilder pb= new ProcessBuilder(s.split("\\s") );
