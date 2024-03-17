@@ -17,7 +17,7 @@
         <title>Album Server</title>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
         <meta name="ROBOTS" content="NOFOLLOW">
-        <meta name="version" content="20200614">
+        <meta name="version" content="<%=Util.getAlbumServerVersion()%>">
     </head>
     
     

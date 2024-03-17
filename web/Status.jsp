@@ -54,6 +54,15 @@
             <% } %>
         </p>
         
+        <p>Video thumbnailer is a program which extracts images from a video.
+        <%
+            if ( Configuration.getVideoThumbnailer()==null ) { %>
+                (no thumbnailer)
+            <% } else { %>
+            <a href="<%=Configuration.getVideoThumbnailer()%>" target="top"><%=Configuration.getVideoThumbnailer()%></a>
+            <% } %>
+        </p>
+        
         <p>Java: <%= System.getProperty("java.version") %>
         <%
             try {
@@ -63,6 +72,7 @@
                 %>Reload again soon.<%
             }
         %>
+        <p>AlbumServer version: <%= Util.getAlbumServerVersion() %></p>
         <p><em><a href='AlbumServerContent0.jsp'>Return</a> to content.</em></p>
     </body>
 </html>

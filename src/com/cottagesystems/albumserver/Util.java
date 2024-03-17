@@ -56,4 +56,12 @@ public class Util {
         }
         
     }
+    
+    /**
+     * return a version id for this software.
+     * @return 
+     */
+    public static String getAlbumServerVersion() {
+        return "20240317.1";
+    }
 }
