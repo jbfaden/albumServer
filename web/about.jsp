@@ -19,6 +19,11 @@
         </ul>
         
         <h1>AlbumServer</h1>
+        <h3>20240317.1</h3></ul> 
+            <li>handle when video thumbnailer isn't set by showing static icon.
+            <li>improve version tracking.
+        </ul>
+        
         <h3>20240228.1</h3></ul> 
             <li>Don't throw runtime when credentials info file isn't found, it's better to work somewhat and introduce errors to future me.
         </ul>
