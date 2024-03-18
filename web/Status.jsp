@@ -72,6 +72,9 @@
                 %>Reload again soon.<%
             }
         %>
+        
+        <p>WorkQueue depth is <%= WorkQueue.getInstance().size() %>
+            
         <p>AlbumServer version: <%= Util.getAlbumServerVersion() %></p>
         <p><em><a href='AlbumServerContent0.jsp'>Return</a> to content.</em></p>
     </body>
