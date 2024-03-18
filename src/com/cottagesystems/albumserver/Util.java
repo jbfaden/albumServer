@@ -62,6 +62,6 @@ public class Util {
      * @return 
      */
     public static String getAlbumServerVersion() {
-        return "20240317.1";
+        return "20240317.2";
     }
 }

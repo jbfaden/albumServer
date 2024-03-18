@@ -34,7 +34,8 @@ public class Configuration {
     private static String notesRoot = null;
     private static URL notesURL = null;
     private static String videoThumbnailer = null;
-            
+    private static int threadCount=4;
+    
     /**
      * return true if the configuration has not been loaded.
      * @return 
@@ -80,6 +81,10 @@ public class Configuration {
                     fw.write("\n");
                     fw.write("# command to run to generate thumbnails of videos. \" <video> <thumb>\" is appended to the line and it is executed.\n");
                     fw.write("videoThumbnailer=/usr/bin/totem-video-thumbnailer -s 640\n");
+                    fw.write("\n");
+                    fw.write("# number of threads used to reduce images.\n");
+                    fw.write("threadCount=16\n");
+                    
                 }
             }
             prop.load( new InputStreamReader( new FileInputStream( configFile ) ) );
@@ -123,6 +128,8 @@ public class Configuration {
             }
             
             videoThumbnailer= prop.getProperty("videoThumbnailer");
+            
+            threadCount= (Integer)prop.getOrDefault( "threadCount",16 );
             
         } catch (IOException ex) {
             if ( ex instanceof FileNotFoundException ) {
@@ -222,6 +229,14 @@ public class Configuration {
      */
     public static String getVideoThumbnailer() {
         return videoThumbnailer;
+    }
+
+    /**
+     * return the number of worker threads
+     * @return 
+     */
+    public static int getThreadCount() {
+        return threadCount;
     }
         
 }

@@ -183,7 +183,8 @@ public class Negative extends Media {
         if ( !f.exists() ) {
             Runnable run= () -> {
                 try {
-                    BufferedImage image = null;
+                    logger.log(Level.INFO, "reducing image {0}", id);
+                    BufferedImage image;
                     String format = Util.getExt(id);
                     image = ImageIO.read(new File(Configuration.getImageDatabaseRoot(), id));
                     final int w = image.getWidth();
