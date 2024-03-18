@@ -58,7 +58,7 @@ public class WorkQueue {
                     }
 
                     r = (Runnable) queue.removeFirst();
-                    logger.log(Level.INFO, "workQueue depth is {0}", queue.size());
+                    logger.log(Level.FINE, "workQueue depth is {0}", queue.size());
                 }
 
                 // If we don't catch RuntimeException,
