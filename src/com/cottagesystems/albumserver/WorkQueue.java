@@ -12,8 +12,7 @@ public class WorkQueue {
     private final PoolWorker[] threads;
     private final LinkedList queue;
 
-    public WorkQueue(int nThreads)
-    {
+    public WorkQueue(int nThreads) {
         queue = new LinkedList();
         threads = new PoolWorker[nThreads];
 
@@ -23,11 +22,23 @@ public class WorkQueue {
         }
     }
 
+    /**
+     * execute the job.
+     * @param r 
+     */
     public void execute(Runnable r) {
         synchronized(queue) {
             queue.addLast(r);
             queue.notify();
         }
+    }
+    
+    /**
+     * return the number of items in the queue.
+     * @return 
+     */
+    public int size() {
+        return queue.size();
     }
 
     private class PoolWorker extends Thread {
