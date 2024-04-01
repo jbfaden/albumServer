@@ -150,7 +150,7 @@ public class Configuration {
     }
     
     /**
-     * soon-to-be read only folder of "negatives"
+     * read only folder of "negatives"
      * @return
      */
     public static String getImageDatabaseRoot() {
