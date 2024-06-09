@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.cottagesystems.albumserver;
 
 import java.io.File;
@@ -10,7 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- *
+ * Utility methods.
  * @author jbf
  */
 public class Util {
@@ -62,6 +59,6 @@ public class Util {
      * @return 
      */
     public static String getAlbumServerVersion() {
-        return "20240318.1";
+        return "20240609.1";
     }
 }
