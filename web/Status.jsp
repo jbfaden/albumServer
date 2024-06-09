@@ -34,15 +34,16 @@
             ImageDataBase: <%= Configuration.getImageDatabaseRoot() %>
             <%= dbRoot.canRead() ? "(" + username + " can read)" : "<b>("+username + " cannot read)</b>" %></p>
 
-        <p>The folder where notes are added to the server is called NotesRoot.  The server must
-            be able to write to this location.<br>
-            NotesRoot: <%= Configuration.getNotesRoot() %> 
-               <%= notesRoot.canWrite() ? "(" + username + " can write)" : "<b>("+username + " cannot write)</b>" %></p>
-
         <p>CacheRoot is where computed images are stored.<br>
         CacheRoot: <%= Configuration.getCacheRoot() %>
         <%= cacheFile.canWrite() ? "(" + username + " can write)" : "<b>("+username + " cannot write)</b>" %>
         </p>
+
+        <p>The folder where notes are added to the server is called NotesRoot.  The server must
+            be able to write to this location.  Note this can be a git clone of NotesURL, but it is not
+            pushed up to NotesURL automatically.<br>
+            NotesRoot: <%= Configuration.getNotesRoot() %> 
+               <%= notesRoot.canWrite() ? "(" + username + " can write)" : "<b>("+username + " cannot write)</b>" %></p>
         
         <p>NotesURL is a GitLabs or GitHub server where the notes are kept.<br>
         NotesURL: 
