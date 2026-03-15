@@ -126,7 +126,7 @@ public class LoginBean {
         try ( InputStream in= new FileInputStream(passwordFile) ) {
             passwords.load(in);
         } catch ( IOException ex) {
-            throw new IllegalArgumentException("Expected to find/read password file at "+passwordFile);
+            logger.warning("Expected to find/read password file at "+passwordFile);
         } 
         
     }
@@ -150,7 +150,7 @@ public class LoginBean {
         try ( InputStream in= new FileInputStream(limitedPublicFile) ) {
             ipaccess.load(in);
         } catch ( IOException ex) {
-            throw new IllegalArgumentException("Expected to find/read limitedPublic file at "+limitedPublicFile);
+            logger.warning("Expected to find/read limitedPublic file at "+limitedPublicFile);
         } 
         for ( Object o: ipaccess.keySet() ) {
             String k= (String)o;

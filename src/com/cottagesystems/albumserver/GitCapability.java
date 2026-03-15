@@ -14,14 +14,14 @@ public class GitCapability implements Capability {
     public String getHtmlPresentor(Media media, AccessBean access) {
         URL s= Configuration.getNotesURL();
         if ( s==null ) {
-            return null;
+            return "<span title=\"Gitlab is not configured\">Gitlab</span>";
         } else {
             String notesFile= Configuration.getNotesRoot() + media.getId() + ".md";
             if ( new File(notesFile).exists() ) {
                 String metaFileStr= Configuration.getNotesURL().toString() + media.getId() + ".md";
-                return "<a href=\"" + metaFileStr + "\" target='_blank'>gitlabs</a>";
+                return "<a href=\"" + metaFileStr + "\" target='_blank'>GitLab</a>";
             } else {
-                return "notes";                
+                return "<span title=\"no notes found\">notes</span>";                
             }
             
         }

@@ -1,3 +1,5 @@
+<%@page import="com.cottagesystems.albumserver.Util"%>
+<%@page import="com.cottagesystems.albumserver.Configuration"%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%--
@@ -23,10 +25,16 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
         Sounds and other content is stored in Albums, which correspond to 
         directories on the server.  Simple security is allowed, but most
         albums are public by default.
+        
+        This needs software on the server:
+        <ul>
+            <li>/usr/bin/totem-video-thumbnailer
+        </ul>
+
         <br>
         <hr>
     <a href="AlbumServer0.jsp">open album server</a>
     <hr>
-    <small>Version 20220925a</small>
+    <small>Version <%=Util.getAlbumServerVersion() %></small>
     </body>
 </html>

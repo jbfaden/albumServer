@@ -33,7 +33,9 @@ public class Configuration {
     private static String cacheRoot = null;
     private static String notesRoot = null;
     private static URL notesURL = null;
-            
+    private static String videoThumbnailer = null;
+    private static int threadCount=4;
+    
     /**
      * return true if the configuration has not been loaded.
      * @return 
@@ -65,11 +67,24 @@ public class Configuration {
                     }
                 }
                 try (FileWriter fw = new FileWriter(configFile)) {
-                    fw.write("imageDatabaseRoot=/tmp/albumserver/imageDatabase/\n"
-                            + "cacheRoot=/tmp/albumServer/imageCache/\n"
-                            + "notesRoot=/tmp/albumServer/notes/\n"
-                            + "notesURL="
-                    );
+                    fw.write("# directory relative to this configuration\n");
+                    fw.write("imageDatabaseRoot=imageDatabase/\n");
+                    fw.write("\n");
+                    fw.write("# location of directory where server can generate thumbnails and reduced resolution images.\n");
+                    fw.write("cacheRoot=imageCache/\n");
+                    fw.write("\n");
+                    fw.write("# location of directory where server can find annotations to images.  This might be a clone of a Gitlab server.\n");
+                    fw.write("notesRoot=notes/\n");
+                    fw.write("\n");
+                    fw.write("# location of Gitlab server project root where annotations can be editted.\n");
+                    fw.write("notesURL=\n");
+                    fw.write("\n");
+                    fw.write("# command to run to generate thumbnails of videos. \" <video> <thumb>\" is appended to the line and it is executed.\n");
+                    fw.write("videoThumbnailer=/usr/bin/totem-video-thumbnailer -s 640\n");
+                    fw.write("\n");
+                    fw.write("# number of threads used to reduce images.\n");
+                    fw.write("threadCount=16\n");
+                    
                 }
             }
             prop.load( new InputStreamReader( new FileInputStream( configFile ) ) );
@@ -77,9 +92,12 @@ public class Configuration {
             cacheRoot = prop.getProperty("cacheRoot");
             notesRoot = prop.getProperty("notesRoot");
             String notesURLString = prop.getProperty("notesURL",null);
-            if ( notesURLString==null ) {
+            if ( notesURLString==null || notesURLString.length()==0 ) {
                 notesURL = null;
             } else {
+                if ( !notesURLString.endsWith("/") ) {
+                    notesURLString= notesURLString+"/";
+                }
                 notesURL = new URL( notesURLString );
             }
             
@@ -109,6 +127,10 @@ public class Configuration {
                 cacheRoot= cacheRoot + "/";
             }
             
+            videoThumbnailer= prop.getProperty("videoThumbnailer");
+            
+            threadCount= (Integer)prop.getOrDefault( "threadCount",16 );
+            
         } catch (IOException ex) {
             if ( ex instanceof FileNotFoundException ) {
                 throw (FileNotFoundException)ex;
@@ -128,7 +150,7 @@ public class Configuration {
     }
     
     /**
-     * soon-to-be read only folder of "negatives"
+     * read only folder of "negatives"
      * @return
      */
     public static String getImageDatabaseRoot() {
@@ -184,8 +206,9 @@ public class Configuration {
     }
     
     /**
-     * the location of a writeable folder that is backed up.  
-     * Arbitrary text is put here.
+     * the location of a writable folder that is backed up.  
+     * Arbitrary text is put here.  This might be a clone of a GitLab
+     * repository.
      * @return
      */
     public static String getNotesRoot() {
@@ -193,11 +216,27 @@ public class Configuration {
     }
     
     /**
-     * null or the location of a remote store of notes, like a Gitlabs server.
+     * null or the location of a remote store of notes, like a Gitlab server.
      * @return 
      */
     public static URL getNotesURL() {
         return notesURL;
+    }
+    
+    /**
+     * command to run to create a thumbnail from a video
+     * @return 
+     */
+    public static String getVideoThumbnailer() {
+        return videoThumbnailer;
+    }
+
+    /**
+     * return the number of worker threads
+     * @return 
+     */
+    public static int getThreadCount() {
+        return threadCount;
     }
         
 }

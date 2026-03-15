@@ -70,7 +70,7 @@ public class PhotoServer extends HttpServlet {
         }
         
         BufferedImage image;
-        int srcScale= 1;  // scaling from original of the source image.
+        int srcScale= 1;  // scaling from original of the source image.  2=half the size
 
         Media m;
         if ( icon!=null ) {
@@ -172,8 +172,8 @@ public class PhotoServer extends HttpServlet {
             scaley= scaley / srcScale;
             cropRectangle.x *= srcScale;
             cropRectangle.y *= srcScale;
-            cropRectangle.height *= srcScale;
             cropRectangle.width *= srcScale;
+            cropRectangle.height *= srcScale;
             srcScale= 1;
         }
 
@@ -215,6 +215,7 @@ public class PhotoServer extends HttpServlet {
         if ( !aa ) {
             atInv.scale( 1/scalex, 1/scaley );
         } else {
+            //imagge= image.getScaledInstance( (int)(cropRectangle.width), (int)(cropRectangle.height), Image.SCALE_AREA_AVERAGING );
             imagge= image.getScaledInstance( (int)(w*scalex), (int)(h*scaley), Image.SCALE_AREA_AVERAGING );
         }
 

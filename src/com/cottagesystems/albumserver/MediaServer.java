@@ -7,6 +7,14 @@
 package com.cottagesystems.albumserver;
 
 import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.WritableByteChannel;
+import java.util.Enumeration;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -64,32 +72,72 @@ public class MediaServer extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         
-        String id= request.getParameter("id");
+        String range= request.getHeader("range");
         
+        String id= request.getParameter("id");
+
         if ( id.contains("..") ) throw new IllegalArgumentException("attempt to access area outside of image database.");
         
         String mime= mimeForExt(id);
         
         File f= reformatFile( id );
-        if ( f==null ) f=new File( Configuration.getImageDatabaseRoot(), id ); // Sonatype lift okay, see check on line 69.
+        if ( f==null ) {
+            f=new File( Configuration.getImageDatabaseRoot(), id );
+        } // Sonatype lift okay, see check on line 69.
         
+        long startByte=-1;
+        long stopByte=-1;
+        
+        if ( range!=null ) {
+            Pattern p= Pattern.compile("bytes=(\\d+)\\-(\\d+)?");
+            Matcher m= p.matcher(range);  
+            if ( m.matches() ) {
+                startByte= Integer.parseInt(m.group(1));
+                if ( m.group(2)!=null ) {
+                    stopByte=  Integer.parseInt(m.group(2));
+                }
+            }
+        } 
+            
         if ( mime!=null ) response.setContentType( mime );
-        response.setContentLength( (int)f.length() );
-        
         int i= id.lastIndexOf("/");
         String extName= i==-1 ? id : id.substring(i+1);
-        
-        response.setContentLength( (int)f.length() );
-        response.setHeader("Content-Disposition", "inline;filename="+extName );
-        
-        OutputStream out = response.getOutputStream();
-        
-        InputStream in= new FileInputStream( f );
-        
-        Util.copy( in, out );
-        
-        in.close();
-        out.close();
+
+//            
+//        if ( startByte!=-1 ) {
+//            if ( stopByte==-1 ) {
+//                stopByte= startByte+100000;
+//            }
+//            int lengthBytes= (int)( stopByte - startByte );
+//            
+//            response.setHeader("Content-Range", "bytes "+startByte+ " " +(stopByte-1)+"/"+f.length());
+//            response.setStatus(206);
+//            response.setContentLength( (int)(stopByte-startByte) );
+//            response.setHeader("Content-Disposition", "inline;filename="+extName );
+//            
+//            OutputStream out = response.getOutputStream();
+//            
+//            MappedByteBuffer byteBuffer= new FileInputStream(f).getChannel().map( FileChannel.MapMode.READ_ONLY, startByte, lengthBytes );
+//
+//            WritableByteChannel channel= Channels.newChannel(out);
+//
+//            channel.write(byteBuffer);
+//
+//            out.close();
+//        } else {
+//        
+            response.setContentLength( (int)f.length() );
+            response.setHeader("Content-Disposition", "inline;filename="+extName );
+
+            OutputStream out = response.getOutputStream();
+
+            InputStream in= new FileInputStream( f );
+
+            Util.copy( in, out );
+
+            in.close();
+            out.close();
+//        }
     }
     
     

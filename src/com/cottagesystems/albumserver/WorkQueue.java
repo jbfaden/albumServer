@@ -1,17 +1,18 @@
 package com.cottagesystems.albumserver;
 
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 // from http://www.ibm.com/developerworks/library/j-jtp0730/index.html "work queues"
 
-public class WorkQueue
-{
-
+public class WorkQueue {
+    private final static Logger logger= Logger.getLogger("albumServer");
+    
     private final PoolWorker[] threads;
     private final LinkedList queue;
 
-    public WorkQueue(int nThreads)
-    {
+    public WorkQueue(int nThreads) {
         queue = new LinkedList();
         threads = new PoolWorker[nThreads];
 
@@ -21,11 +22,23 @@ public class WorkQueue
         }
     }
 
+    /**
+     * execute the job.
+     * @param r 
+     */
     public void execute(Runnable r) {
         synchronized(queue) {
             queue.addLast(r);
             queue.notify();
         }
+    }
+    
+    /**
+     * return the number of items in the queue.
+     * @return 
+     */
+    public int size() {
+        return queue.size();
     }
 
     private class PoolWorker extends Thread {
@@ -45,6 +58,7 @@ public class WorkQueue
                     }
 
                     r = (Runnable) queue.removeFirst();
+                    logger.log(Level.FINE, "workQueue depth is {0}", queue.size());
                 }
 
                 // If we don't catch RuntimeException,
@@ -63,7 +77,7 @@ public class WorkQueue
 
     public synchronized static final WorkQueue getInstance() {
         if ( instance==null ) {
-            instance= new WorkQueue(1);
+            instance= new WorkQueue( Configuration.getThreadCount() );
         }
         return instance;
     }

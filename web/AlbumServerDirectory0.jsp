@@ -18,6 +18,10 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
 This shows either the list of albums, or the media within an album.
 -->
 <html>
+    <head>
+        <!-- <meta http-equiv="refresh" content="5" /> -->
+    </head>
+        
     <body>
     <script>
 function filterFunction() {
@@ -46,7 +50,10 @@ function filterFunction() {
                 <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
                 <%
             }
+            boolean reload= false;
+            boolean first20reload= false;
         %>
+        
         
         <table id="albumsTable">
             <%    
@@ -83,8 +90,17 @@ function filterFunction() {
 
                 AccessBean access= (AccessBean)session.getAttribute("access" );
 
+                int i=0;
                 for ( Media m:list ) {
                     String image= m.getIconURL();
+                    if ( image.contains("src=\"PhotoServer?id=") ) {
+                        if ( m.getReducedImage()==Negative.moment ) {
+                            reload= true;
+                            if ( i<20 ) {
+                                first20reload= true;
+                            }
+                        }
+                    }
                     HideCapability hideCapability= (HideCapability) m.getCapability( Capability.HIDE.getClass(), access );
                     boolean hidden= false;
                     if ( hideCapability!=null ) {
@@ -110,7 +126,7 @@ function filterFunction() {
                         out.println("\n<br><small>"+shor+"</small>");
                     }
                     out.println( "</td></tr>\n");
-                    
+                    i=i+1;
                 }
                 
                 if ( list.size()==0 ) { // whoops, it's actually a Box, which contains other albums.
@@ -122,12 +138,13 @@ function filterFunction() {
                 }
 
 	        //out.println( "<tr><td colspan=2><a href=\"SearchForm.jsp\" target=\"_top\">(search)</a>");
-                out.println( "<tr><td colspan=2><a href=\"AlbumServer0.jsp\" target=\"_top\">albums</a>><b>"+album.getLabel()+"</b></td></tr>" );
+                out.println( "<tr><td colspan=2><a href=\"AlbumServer0.jsp\" target=\"_top\">albums</a>><b>"+album.getLabel()+"</b></td></tr>\n" );
 
             } else {
                 
                 if ( !( new File( Configuration.getImageDatabaseRoot() ).exists() ) ) {
-                    out.println("albums database doesn't exist!<br>Expected to find folders containing images at<br>"+Configuration.getImageDatabaseRoot() );
+                    out.println("<br>albums database doesn't exist!<br>Expected to find folders containing images at<br>"+Configuration.getImageDatabaseRoot()+"<br>"
+                            + "Webmaster, please see configuration at<br>" + Configuration.getHome() + "config.properties ." );
 
                 } else {
 
@@ -145,6 +162,18 @@ function filterFunction() {
             
             %>
         </table>
+
+        <%
+            if ( reload ) {
+                int milliseconds= first20reload ? 2000 : 10000;
+                %>
+                    <script language="javascript">
+                        setTimeout(function () { location.reload(1); }, <%=milliseconds%>);
+                    </script>
+                <%
+            }
+        %>
+
     </body>
     
 </html>

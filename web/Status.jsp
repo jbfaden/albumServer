@@ -34,15 +34,16 @@
             ImageDataBase: <%= Configuration.getImageDatabaseRoot() %>
             <%= dbRoot.canRead() ? "(" + username + " can read)" : "<b>("+username + " cannot read)</b>" %></p>
 
-        <p>The folder where notes are added to the server is called NotesRoot.  The server must
-            be able to write to this location.<br>
-            NotesRoot: <%= Configuration.getNotesRoot() %> 
-               <%= notesRoot.canWrite() ? "(" + username + " can write)" : "<b>("+username + " cannot write)</b>" %></p>
-
         <p>CacheRoot is where computed images are stored.<br>
         CacheRoot: <%= Configuration.getCacheRoot() %>
         <%= cacheFile.canWrite() ? "(" + username + " can write)" : "<b>("+username + " cannot write)</b>" %>
         </p>
+
+        <p>The folder where notes are added to the server is called NotesRoot.  The server must
+            be able to write to this location.  Note this can be a git clone of NotesURL, but it is not
+            pushed up to NotesURL automatically.<br>
+            NotesRoot: <%= Configuration.getNotesRoot() %> 
+               <%= notesRoot.canWrite() ? "(" + username + " can write)" : "<b>("+username + " cannot write)</b>" %></p>
         
         <p>NotesURL is a GitLabs or GitHub server where the notes are kept.<br>
         NotesURL: 
@@ -51,6 +52,15 @@
                 (not used)
             <% } else { %>
             <a href="<%=Configuration.getNotesURL()%>" target="top"><%=Configuration.getNotesURL()%></a>
+            <% } %>
+        </p>
+        
+        <p>Video thumbnailer is a program which extracts images from a video.
+        <%
+            if ( Configuration.getVideoThumbnailer()==null ) { %>
+                (no thumbnailer)
+            <% } else { %>
+            <a href="<%=Configuration.getVideoThumbnailer()%>" target="top"><%=Configuration.getVideoThumbnailer()%></a>
             <% } %>
         </p>
         
@@ -63,6 +73,10 @@
                 %>Reload again soon.<%
             }
         %>
+        
+        <p>WorkQueue depth is <%= WorkQueue.getInstance().size() %>
+            
+        <p>AlbumServer version: <%= Util.getAlbumServerVersion() %></p>
         <p><em><a href='AlbumServerContent0.jsp'>Return</a> to content.</em></p>
     </body>
 </html>

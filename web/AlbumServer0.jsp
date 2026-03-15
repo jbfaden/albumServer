@@ -1,3 +1,4 @@
+<%@page import="java.util.logging.Logger"%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <%@page import="com.cottagesystems.albumserver.*, java.io.*" %>
@@ -16,13 +17,17 @@
         <title>Album Server</title>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
         <meta name="ROBOTS" content="NOFOLLOW">
-        <meta name="version" content="20200614">
+        <meta name="version" content="<%=Util.getAlbumServerVersion()%>">
     </head>
     
     
     <%
     if ( Configuration.isNotLoaded() ) {
-        Configuration.load( request.getServletContext().getInitParameter("albumServerHome") ); 
+        Logger.getLogger("albumServer").info("Configuration.load using initParameter albumServerHome");
+        String home=request.getServletContext().getInitParameter("albumServerHome");
+        Configuration.load( home ); 
+        out.println("configuration loaded...  "+home);
+        response.sendRedirect( request.getContextPath() );
     }
     %>
     
@@ -54,7 +59,7 @@
         </frameSet>
         <frame src="AlbumServerContent0.jsp?album=<%=album%>&id=<%=id%>" name="content" >
     </frameset><noframes></noframes><body>
-        
+    
     </body></noframes>
     <%
           AccessBean access=(AccessBean) session.getAttribute("access");
